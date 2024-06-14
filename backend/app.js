@@ -1,4 +1,5 @@
 const express = require("express");
+const morgan = require("morgan");
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
 const globalErrorHandler = require("./controller/errorController");
@@ -6,6 +7,14 @@ const CustomeError = require("./utils/customError");
 
 const app = express();
 // GLOBAL MIDDLEWARES
+
+// DEVELOPMENT LOGGING
+console.log(`---${process.env.NODE_ENV}---`);
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
+
+// Body parser, reading data from body into req.body
 app.use(express.json());
 
 // ROUTES

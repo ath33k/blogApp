@@ -1,4 +1,4 @@
-const asyncWrapper = require("../utils/asyncMiddlewareWrapper");
+const catchAsyncErr = require("../utils/catchAsyncErr");
 const CustomError = require("./../utils/customError");
 const Post = require("./../model/posts");
 
@@ -12,6 +12,9 @@ exports.getAllPosts = async (req, res, next) => {
 
 exports.getPost = async (req, res, next) => {
   const post = await Post.findById(req.params.id);
+  if (!post) {
+    return next(new CustomError(`Post not found`, 404));
+  }
   res.status(200).json({
     data: post,
   });
@@ -32,15 +35,11 @@ exports.createPost = async (req, res, next) => {
   });
 };
 
-exports.deletePost = asyncWrapper(async (req, res, next) => {
+exports.deletePost = catchAsyncErr(async (req, res, next) => {
   const deletedPost = await Post.findByIdAndDelete(req.params.id);
 
   if (!deletedPost) {
     return next(new CustomError("Couldn't delete post not found", 401));
-    // res.status(404).json({
-    //   status: "fail",
-    //   data: "User Not found",
-    // });
   }
   res.status(204).json({
     status: "success",

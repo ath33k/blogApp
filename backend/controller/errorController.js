@@ -1,3 +1,12 @@
+const CustomError = require("../utils/customError");
+
+const handleValidationErrorDB = (err) => {
+  const errors = Object.values(err.errors).map((el) => el.message);
+
+  const message = `Invalid input data. ${errors.join(". ")}`;
+  return new CustomError(message, 400);
+};
+
 const sendErrorProd = (err, res) => {
   res.status(404).json({
     status: err.status,
@@ -32,6 +41,9 @@ module.exports = (err, req, res, next) => {
   if (process.env.NODE_ENV == "development") {
     sendErrorDev(err, res);
   } else if (process.env.NODE_ENV == "production") {
+    let error = { ...err };
+    if (error.name === "ValidationError")
+      error = handleValidationErrorDB(error);
     sendErrorProd(err, res);
   }
 };
