@@ -75,10 +75,7 @@ exports.login = catchAsyncErr(async (req, res, next) => {
 
   // If everything ok, send token to client
   const token = signToken(user._id);
-  res.status(200).json({
-    status: "success",
-    token,
-  });
+  sendTokenAndResponse(user, 200, res);
 });
 
 // Protects routes with this function
