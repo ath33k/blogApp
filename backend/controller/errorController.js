@@ -7,6 +7,11 @@ const handleValidationErrorDB = (err) => {
   return new CustomError(message, 400);
 };
 
+const handleCastErrorDB = (err) => {
+  const message = `Invalid ${err.path}: ${err.value}. `;
+  return new CustomError(message, 404);
+};
+
 const sendErrorProd = (err, res) => {
   res.status(404).json({
     status: err.status,
@@ -44,6 +49,9 @@ module.exports = (err, req, res, next) => {
     let error = { ...err };
     if (error.name === "ValidationError")
       error = handleValidationErrorDB(error);
-    sendErrorProd(err, res);
+
+    if (err.name === "CastError") error = handleCastErrorDB(error);
+
+    sendErrorProd(error, res);
   }
 };

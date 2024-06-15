@@ -1,30 +1,43 @@
 const catchAsyncErr = require("../utils/catchAsyncErr");
 const CustomError = require("./../utils/customError");
-const Post = require("./../model/posts");
+const APIFeatures = require("./../utils/apiFeatures");
+const Post = require("../model/postsModel");
 
-exports.getAllPosts = async (req, res, next) => {
-  const posts = await Post.find();
-  res.status(200).json({
-    status: "success",
-    data: posts,
-  });
-};
+exports.getAllPosts = catchAsyncErr(async (req, res, next) => {
+  try {
+    const features = new APIFeatures(Post.find(), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
 
-exports.getPost = async (req, res, next) => {
+    const posts = await features.query;
+
+    res.status(200).json({
+      status: "success",
+      results: posts.length,
+      data: posts,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+exports.getPost = catchAsyncErr(async (req, res, next) => {
   const post = await Post.findById(req.params.id);
   if (!post) {
     return next(new CustomError(`Post not found`, 404));
   }
   res.status(200).json({
+    status: "success",
     data: post,
   });
-};
+});
 
-exports.createPost = async (req, res, next) => {
+exports.createPost = catchAsyncErr(async (req, res, next) => {
   const newPost = await Post.create({
     heading: req.body.heading,
     content: req.body.content,
-    createdAt: req.body.createdAt,
   });
 
   res.status(201).json({
@@ -33,7 +46,7 @@ exports.createPost = async (req, res, next) => {
       post: newPost,
     },
   });
-};
+});
 
 exports.deletePost = catchAsyncErr(async (req, res, next) => {
   const deletedPost = await Post.findByIdAndDelete(req.params.id);

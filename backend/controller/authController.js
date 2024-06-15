@@ -1,4 +1,4 @@
-const User = require("../model/user");
+const User = require("../model/userModel");
 const catchAsyncErr = require("../utils/catchAsyncErr");
 const { promisify } = require("util");
 const CustomError = require("../utils/customError");
@@ -113,3 +113,19 @@ exports.protect = catchAsyncErr(async (req, res, next) => {
   req.user = freshUser;
   next();
 });
+
+exports.restrictTo = (...roles) => {
+  // roles ['admin,'lead-guide']. role='user'
+  // req.user is coming from previous middleware (protect) which ran and before this middleware
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new CustomError(
+          "you do not have permission to perform this action",
+          403
+        )
+      );
+    }
+    next();
+  };
+};

@@ -1,4 +1,4 @@
-const User = require("../model/user");
+const User = require("../model/userModel");
 const catchAsyncErr = require("../utils/catchAsyncErr");
 const CustomError = require("../utils/customError");
 
