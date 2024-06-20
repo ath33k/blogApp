@@ -5,9 +5,7 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 console.log(import.meta.env.VITE_NODE_ENV);
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
 );

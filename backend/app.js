@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
 const globalErrorHandler = require("./controller/errorController");
@@ -16,6 +17,7 @@ if (process.env.NODE_ENV === "development") {
 
 // Body parser, reading data from body into req.body
 app.use(express.json());
+app.use(cookieParser());
 
 // ROUTES
 //mounting routes

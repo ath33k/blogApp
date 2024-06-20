@@ -1,7 +1,32 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import axios from "axios";
+import React, { useEffect } from "react";
+import { Link, NavLink } from "react-router-dom";
 
-export const NavBar = ({ loggedUser }) => {
+export const NavBar = ({
+  loggedUser,
+  isLoading,
+  setLoading,
+  isAuthenticated,
+}) => {
+  useEffect(() => {
+    if (loggedUser) {
+      setLoading(false);
+    }
+  }, [loggedUser, setLoading]);
+
+  const handleLogout = async () => {
+    try {
+      const response = await axios.get("/api/v1/users/logout");
+      location.reload(true);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  console.log(loggedUser);
+  if (isLoading) {
+    return <div>loading...</div>;
+  }
+
   return (
     <nav className="w-screen">
       <div className="flex justify-between items-center bg-slate-200 px-8">
@@ -11,12 +36,17 @@ export const NavBar = ({ loggedUser }) => {
           <NavLink to={"/"}>
             <li>Home</li>
           </NavLink>
-          <li>about us</li>
+          <li>Categories</li>
+          <li>About us</li>
         </ul>
-        {loggedUser ? (
+        {isAuthenticated ? (
           <ul className="flex p-2">
-            <li className="bg-green-500 p-2">Logout</li>
-            <li className="p-2 mx-2">{loggedUser.name}</li>
+            <Link to={"/"} onClick={handleLogout}>
+              <li className="bg-green-500 p-2">Logout</li>
+            </Link>
+            <Link to={"/profile"}>
+              <li className="p-2 mx-2">{loggedUser.name}</li>
+            </Link>
           </ul>
         ) : (
           <ul className="flex gap-4 ">

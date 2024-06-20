@@ -21,8 +21,9 @@ export const Signup = ({ setLoggedUser }) => {
         passwordConfirm: confirmPassword,
       });
       const responseData = response.data.data;
-      setLoggedUser(responseData.user);
-      localStorage.setItem("user", JSON.stringify(responseData.user));
+      // setLoggedUser(responseData.user);
+      location.assign("/");
+      // localStorage.setItem("user", JSON.stringify(responseData.user));
       console.log(responseData.user);
     } catch (err) {
       console.log("err");

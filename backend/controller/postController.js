@@ -12,11 +12,13 @@ exports.getAllPosts = catchAsyncErr(async (req, res, next) => {
       .paginate();
 
     const posts = await features.query;
+    const count = await Post.find().countDocuments();
 
     res.status(200).json({
       status: "success",
       results: posts.length,
       data: posts,
+      totalPages: Math.ceil(count / (req.query.limit || 5)),
     });
   } catch (err) {
     next(err);
@@ -28,6 +30,7 @@ exports.getPost = catchAsyncErr(async (req, res, next) => {
   if (!post) {
     return next(new CustomError(`Post not found`, 404));
   }
+  console.log(req.user);
   res.status(200).json({
     status: "success",
     data: post,
@@ -42,9 +45,7 @@ exports.createPost = catchAsyncErr(async (req, res, next) => {
 
   res.status(201).json({
     status: "success",
-    data: {
-      post: newPost,
-    },
+    data: newPost,
   });
 });
 
