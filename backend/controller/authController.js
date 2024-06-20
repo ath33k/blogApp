@@ -3,6 +3,8 @@ const catchAsyncErr = require("../utils/catchAsyncErr");
 const { promisify } = require("util");
 const CustomError = require("../utils/customError");
 const jwt = require("jsonwebtoken");
+const sendEmail = require("../utils/email");
+const Email = require("../utils/email");
 
 // Creating jwt with user id and the secret
 const signToken = (id) => {
@@ -39,7 +41,6 @@ const sendTokenAndResponse = (user, statusCode, res) => {
 
 // user sign up function
 exports.signup = catchAsyncErr(async (req, res, next) => {
-  console.log(req.body);
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
@@ -47,6 +48,14 @@ exports.signup = catchAsyncErr(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
     role: req.body.role,
   });
+
+  const url = `${req.protocol}://${req.get("host")}/me`;
+  console.log(url);
+  try {
+    await new Email(newUser, url).sendWelcome();
+  } catch (err) {
+    console.log("error while sending email");
+  }
 
   sendTokenAndResponse(newUser, 201, res);
 });
@@ -211,6 +220,48 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
+
+exports.forgotPassword = catchAsyncErr(async (req, res, next) => {
+  // 1) GET USE BASED ON POSTED EMAIL
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    return next(new CustomError("Thee is no user wit that email address", 404));
+  }
+  // 2) GENERATE RANODM TOKEN
+  const resetToken = user.createPasswordResetToken();
+  await user.save({ validateBeforeSave: false });
+
+  const resetURL = `${req.protocol}://${req.get(
+    "host"
+  )}/api/v1/users/resetPassword/${resetToken}`;
+
+  const message = `Forgot your password? Submit a PATCH request with your new aassword and password confirm to : ${resetURL}.\n If you didnt fogot your password please ignore this email`;
+
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: "Your password reset token (Valid for 10 min)",
+      message,
+    });
+
+    res.status(200).json({
+      status: "success",
+      message: "Token sent to email",
+    });
+  } catch (err) {
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    user.save({ validateBeforeSave: false });
+    return next(
+      new CustomError(
+        "There was an errror sending the email. Try again later",
+        500
+      )
+    );
+  }
+});
+
+exports.resetPassword = (req, res, next) => {};
 
 exports.logout = (req, res, next) => {
   console.log("his");

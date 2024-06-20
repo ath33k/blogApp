@@ -1,3 +1,4 @@
+import { Avatar, Chip } from "@mui/material";
 import axios from "axios";
 import React, { useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
@@ -22,7 +23,7 @@ export const NavBar = ({
       console.log(err);
     }
   };
-  console.log(loggedUser);
+
   if (isLoading) {
     return <div>loading...</div>;
   }
@@ -45,7 +46,12 @@ export const NavBar = ({
               <li className="bg-green-500 p-2">Logout</li>
             </Link>
             <Link to={"/profile"}>
-              <li className="p-2 mx-2">{loggedUser.name}</li>
+              <li className="p-2 mx-2">
+                <Chip
+                  avatar={<Avatar>{loggedUser.name[0]}</Avatar>}
+                  label={loggedUser.name}
+                />
+              </li>
             </Link>
           </ul>
         ) : (

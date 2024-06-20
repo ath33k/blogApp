@@ -14,6 +14,6 @@ router
 router
   .route("/:id")
   .get(postController.getPost)
-  .delete(postController.deletePost);
+  .delete(authController.restrictTo("admin"), postController.deletePost);
 
 module.exports = router;

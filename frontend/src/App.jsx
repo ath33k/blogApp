@@ -9,6 +9,7 @@ import { Route, Routes } from "react-router-dom";
 import PostPage from "./pages/PostPage";
 import axios from "axios";
 import CreatePost from "./pages/CreatePost";
+import Profile from "./pages/Profile";
 
 function App() {
   const [loggedUser, setLoggedUser] = useState();
@@ -70,6 +71,7 @@ function App() {
           path="/login"
           element={<Login setLoggedUser={setLoggedUser} />}
         />
+        <Route path="/profile" element={<Profile loggedUser={loggedUser} />} />
         <Route
           path={`/post/:id`}
           element={<PostPage setLoggedUser={setLoggedUser} />}
