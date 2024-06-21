@@ -10,6 +10,7 @@ import PostPage from "./pages/PostPage";
 import axios from "axios";
 import CreatePost from "./pages/CreatePost";
 import Profile from "./pages/Profile";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   const [loggedUser, setLoggedUser] = useState();
@@ -35,13 +36,7 @@ function App() {
 
     fetchUser();
   }, []);
-  // useEffect(() => {
-  //   const loggedInUser = localStorage.getItem("user");
-  //   if (loggedInUser) {
-  //     const foundUser = JSON.parse(loggedInUser);
-  //     setLoggedUser(foundUser);
-  //   }
-  // }, []);
+
   return (
     <>
       <NavBar
@@ -77,6 +72,7 @@ function App() {
           element={<PostPage setLoggedUser={setLoggedUser} />}
         />
         <Route path="/createPost" element={<CreatePost />} />
+        <Route path="/profile/resetPassword/:id" element={<ResetPassword />} />
       </Routes>
     </>
   );

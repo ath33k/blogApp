@@ -9,6 +9,10 @@ const postsSchema = new mongoose.Schema({
     type: String,
     required: [true, "A post must have a content"],
   },
+  category: {
+    type: String,
+    required: [true, "A post should have a category"],
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

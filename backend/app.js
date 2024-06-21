@@ -15,6 +15,7 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+app.use(express.static(`${__dirname}/public`));
 // Body parser, reading data from body into req.body
 app.use(express.json());
 app.use(cookieParser());

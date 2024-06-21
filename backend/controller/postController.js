@@ -41,6 +41,7 @@ exports.createPost = catchAsyncErr(async (req, res, next) => {
   const newPost = await Post.create({
     heading: req.body.heading,
     content: req.body.content,
+    category: req.body.category,
   });
 
   res.status(201).json({

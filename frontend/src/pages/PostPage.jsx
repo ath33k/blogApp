@@ -82,9 +82,10 @@ const PostPage = ({ setLoggedUser }) => {
           fetchDelete={fetchDelete}
         />
       )}
-      <div>
+      <div className="flex flex-col gap-2 p-4 px-8">
         <div>
           <h1>{data.heading}</h1>
+          <span>Category: {data.category}</span>
           <p>{data.content}</p>
         </div>
         <div>
@@ -92,6 +93,7 @@ const PostPage = ({ setLoggedUser }) => {
             aria-describedby={popoverId}
             variant="outlined"
             onClick={handlePopoverClick}
+            size="small"
           >
             ...
           </Button>
@@ -110,16 +112,16 @@ const PostPage = ({ setLoggedUser }) => {
             </IconButton>
           </Popover>
         </div>
+        <hr />
+        <p>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe
+          deserunt ullam quas asperiores similique esse consequuntur itaque
+          provident, repellat, error voluptatum commodi pariatur ducimus facere
+          numquam. Ipsum at voluptate saepe animi eum distinctio consequatur
+          nihil, quia fugiat non enim laboriosam dicta, repellat dolorum cumque
+          voluptatibus nulla ullam! Maxime, earum aliquam!
+        </p>
       </div>
-      <hr />
-      <p>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe deserunt
-        ullam quas asperiores similique esse consequuntur itaque provident,
-        repellat, error voluptatum commodi pariatur ducimus facere numquam.
-        Ipsum at voluptate saepe animi eum distinctio consequatur nihil, quia
-        fugiat non enim laboriosam dicta, repellat dolorum cumque voluptatibus
-        nulla ullam! Maxime, earum aliquam!
-      </p>
     </div>
   );
 };
