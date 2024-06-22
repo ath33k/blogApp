@@ -37,7 +37,6 @@ export const NavBar = ({
           <NavLink to={"/"}>
             <li>Home</li>
           </NavLink>
-          <li>Categories</li>
           <li>About us</li>
         </ul>
         {isAuthenticated ? (

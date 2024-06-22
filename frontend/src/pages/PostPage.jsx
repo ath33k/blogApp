@@ -14,7 +14,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-const PostPage = ({ setLoggedUser }) => {
+const PostPage = ({ setLoggedUser, loggedUser }) => {
   const [data, setData] = useState();
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
@@ -88,30 +88,32 @@ const PostPage = ({ setLoggedUser }) => {
           <span>Category: {data.category}</span>
           <p>{data.content}</p>
         </div>
-        <div>
-          <Button
-            aria-describedby={popoverId}
-            variant="outlined"
-            onClick={handlePopoverClick}
-            size="small"
-          >
-            ...
-          </Button>
-          <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handlePopoverClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-          >
-            <IconButton aria-label="delete" onClick={handleModelOpen}>
-              <DeleteIcon />
-            </IconButton>
-          </Popover>
-        </div>
+        {loggedUser && (
+          <div>
+            <Button
+              aria-describedby={popoverId}
+              variant="outlined"
+              onClick={handlePopoverClick}
+              size="small"
+            >
+              ...
+            </Button>
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handlePopoverClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+            >
+              <IconButton aria-label="delete" onClick={handleModelOpen}>
+                <DeleteIcon />
+              </IconButton>
+            </Popover>
+          </div>
+        )}
         <hr />
         <p>
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe

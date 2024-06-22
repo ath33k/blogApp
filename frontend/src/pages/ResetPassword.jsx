@@ -2,8 +2,9 @@ import { Button, TextField } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
+import NotLoggedInMsg from "../components/NotLoggedInMsg";
 
-const ResetPassword = () => {
+const ResetPassword = ({ loggedUser }) => {
   const { id } = useParams();
   const [newPassword, setNewPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
@@ -24,32 +25,36 @@ const ResetPassword = () => {
   };
   return (
     <div>
-      <form action="" onSubmit={handlePasswordChangeSubmission}>
-        <h3>Reset Password</h3>
-        <div className="flex flex-col gap-4 py-2">
-          <TextField
-            required
-            id="outlined-required"
-            label="New Password"
-            type="password"
-            defaultValue=""
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
+      {!loggedUser ? (
+        <NotLoggedInMsg />
+      ) : (
+        <form action="" onSubmit={handlePasswordChangeSubmission}>
+          <h3>Reset Password</h3>
+          <div className="flex flex-col gap-4 py-2">
+            <TextField
+              required
+              id="outlined-required"
+              label="New Password"
+              type="password"
+              defaultValue=""
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
 
-          <TextField
-            required
-            id="outlined-required"
-            label="Confirm Password"
-            type="password"
-            defaultValue=""
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
+            <TextField
+              required
+              id="outlined-required"
+              label="Confirm Password"
+              type="password"
+              defaultValue=""
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
 
-          <Button variant="contained" color="success" type="submit">
-            Submit
-          </Button>
-        </div>
-      </form>
+            <Button variant="contained" color="success" type="submit">
+              Submit
+            </Button>
+          </div>
+        </form>
+      )}
     </div>
   );
 };

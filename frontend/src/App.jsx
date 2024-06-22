@@ -69,10 +69,18 @@ function App() {
         <Route path="/profile" element={<Profile loggedUser={loggedUser} />} />
         <Route
           path={`/post/:id`}
-          element={<PostPage setLoggedUser={setLoggedUser} />}
+          element={
+            <PostPage setLoggedUser={setLoggedUser} loggedUser={loggedUser} />
+          }
         />
-        <Route path="/createPost" element={<CreatePost />} />
-        <Route path="/profile/resetPassword/:id" element={<ResetPassword />} />
+        <Route
+          path="/createPost"
+          element={<CreatePost loggedUser={loggedUser} />}
+        />
+        <Route
+          path="/profile/resetPassword/:id"
+          element={<ResetPassword loggedUser={loggedUser} />}
+        />
       </Routes>
     </>
   );

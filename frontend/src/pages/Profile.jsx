@@ -1,7 +1,9 @@
 import axios from "axios";
 import {
+  Backdrop,
   Box,
   Button,
+  CircularProgress,
   List,
   ListItem,
   ListItemButton,
@@ -14,11 +16,12 @@ import ListItemText from "@mui/material/ListItemText";
 import KeyIcon from "@mui/icons-material/Key";
 import PersonIcon from "@mui/icons-material/Person";
 import React, { useEffect, useState } from "react";
-
+import { Link } from "react-router-dom";
 import LockResetIcon from "@mui/icons-material/LockReset";
 import ChangePassword from "../components/ChangePassword";
 import ResetPassword from "../components/ResetPassword";
 import UserInfo from "../components/UserInfo";
+import NotLoggedInMsg from "../components/NotLoggedInMsg";
 
 const Profile = ({ loggedUser }) => {
   const [selectedListIndex, setSelectedListIndex] = useState(0);
@@ -33,46 +36,63 @@ const Profile = ({ loggedUser }) => {
   useEffect(() => {
     if (loggedUser) {
       setIsLoading(false);
+    } else {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 3000);
     }
   }, [loggedUser]);
 
-  if (!loggedUser || isLoading) {
-    return <h2>Loading...</h2>;
+  if (isLoading) {
+    return (
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    );
   }
   return (
-    <div className="flex h-screen self-stretch gap-4 p-2 justify-center">
-      {resetModel && (
-        <ResetConfirmModel
-          resetData={resetData}
-          setResetModel={setResetModel}
-          resetModel={resetModel}
-        />
-      )}
-      <div className="border-2 p-2 min-w-[20%] md:min-w-[20%] ">
-        <div className="">
-          <SideList
-            selectedListIndex={selectedListIndex}
-            handleListClick={handleListClick}
-          />
-        </div>
-      </div>
-      <div className="bg-white min-w-[60%] p-4 border-2">
-        <div className="">
-          {/* slected user info */}
-          {selectedListIndex == 0 && (
-            <UserInfo loggedUser={loggedUser} isLoading={isLoading} />
-          )}
-          {selectedListIndex == 1 && <ChangePassword />}
-          {selectedListIndex == 2 && (
-            <ResetPassword
-              loggedUser={loggedUser}
-              setResetData={setResetData}
+    <>
+      {!loggedUser ? (
+        <NotLoggedInMsg />
+      ) : (
+        <div className="flex h-screen self-stretch gap-4 p-2 justify-center">
+          {resetModel && (
+            <ResetConfirmModel
+              resetData={resetData}
               setResetModel={setResetModel}
+              resetModel={resetModel}
             />
           )}
+          <div className="border-2 p-2 min-w-[20%] md:min-w-[20%] ">
+            <div className="">
+              <SideList
+                selectedListIndex={selectedListIndex}
+                handleListClick={handleListClick}
+              />
+            </div>
+          </div>
+          <div className="bg-white min-w-[60%] p-4 border-2">
+            <div className="">
+              {/* slected user info */}
+              {selectedListIndex == 0 && (
+                <UserInfo loggedUser={loggedUser} isLoading={isLoading} />
+              )}
+              {selectedListIndex == 1 && <ChangePassword />}
+              {selectedListIndex == 2 && (
+                <ResetPassword
+                  loggedUser={loggedUser}
+                  setResetData={setResetData}
+                  setResetModel={setResetModel}
+                />
+              )}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 
