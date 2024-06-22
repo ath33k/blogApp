@@ -7,10 +7,11 @@ export default ({ mode }) => {
 
   return defineConfig({
     plugins: [react()],
+
     server: {
       proxy: {
         "/api": {
-          target: env.VITE_BACKEND_URL,
+          target: process.env.VITE_BACKEND_URL,
           changeOrigin: true,
           secure: true,
         },
