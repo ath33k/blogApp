@@ -2,7 +2,7 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 
 const mongoose = require("mongoose");
-const app = require("./app");
+const app = require("../app");
 
 // DB CONNECTION
 const DB = process.env.DATABASE_CONNECTION.replace(

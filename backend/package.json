@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start:dev": "node index.js",
-    "start:prod": "set NODE_ENV=production& node index.js",
+    "start:dev": "node api/index.js",
+    "start:prod": "set NODE_ENV=production& node api/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
