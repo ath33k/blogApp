@@ -4,9 +4,12 @@ import React from "react";
 
 const ResetPassword = ({ loggedUser, setResetModel, setResetData }) => {
   const fetchResetPassword = async () => {
-    const response = await axios.post("/api/v1/users/forgotPassword", {
-      email: loggedUser.email,
-    });
+    const response = await axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/forgotPassword`,
+      {
+        email: loggedUser.email,
+      }
+    );
     setResetModel(true);
     setResetData(response.data.resetData);
     console.log(response);

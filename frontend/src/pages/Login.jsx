@@ -19,13 +19,18 @@ export const Login = ({ setLoggedUser }) => {
         {
           email: email,
           password: password,
+        },
+        {
+          withCredentials: true,
         }
       );
       const responseData = response.data.data;
       console.log(response);
       // setLoggedUser(responseData.user);
       // localStorage.setItem("user", JSON.stringify(responseData.user));
+      console.log(responseData);
       setBackDropOpen(false);
+
       location.assign("/");
     } catch (err) {
       setBackDropOpen(false);

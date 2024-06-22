@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const helmet = require("helmet");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/userRoutes");
@@ -8,14 +9,26 @@ const globalErrorHandler = require("./controller/errorController");
 const CustomeError = require("./utils/customError");
 
 const app = express();
-// GLOBAL MIDDLEWARES
-app.use(
-  cors({
-    origin: [process.env.FRONTEND_URL],
-    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-    credentials: true,
-  })
-);
+// app.use(helmet());
+// app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
+
+const corsOptions = {
+  origin: [[process.env.FRONTEND_URL]],
+  optionsSuccessStatus: 200,
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+// app.options("*", function (req, res) {
+//   res.status(200);
+// });
+
+// app.use((req, res, next) => {
+//   res.set("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
+//   res.set("Access-Control-Allow-Credentials", "true");
+//   next();
+// });
+
 // DEVELOPMENT LOGGING
 console.log(`---${process.env.NODE_ENV}---`);
 if (process.env.NODE_ENV === "development") {

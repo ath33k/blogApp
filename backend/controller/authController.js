@@ -17,7 +17,7 @@ const signToken = (id) => {
 // sends response and the cookie token
 const sendTokenAndResponse = (user, statusCode, res) => {
   const token = signToken(user._id);
-  console.log(token);
+  console.log(token, "tokenn");
 
   const cookieOptions = {
     expires: new Date(
@@ -84,7 +84,7 @@ exports.login = catchAsyncErr(async (req, res, next) => {
   }
 
   // If everything ok, send token to client
-  const token = signToken(user._id);
+  // const token = signToken(user._id);
   sendTokenAndResponse(user, 200, res);
 });
 
@@ -169,9 +169,11 @@ exports.isLoggedIn = async (req, res, next) => {
 exports.checkLogin = catchAsyncErr(async (req, res, next) => {
   const token = req.cookies.jwt;
 
+  console.log(token, "what");
+
   if (!token) {
     return next(
-      new CustomError(" You are not logged In! Pelase log into get access")
+      new CustomError(" You are not logged In! Pelase log into get access", 401)
     );
   }
 
