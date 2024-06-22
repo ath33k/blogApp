@@ -22,7 +22,7 @@ app.use(cookieParser());
 
 // ROUTES
 //mounting routes
-app.use("/", (req, res, next) => {
+app.get("/", (req, res, next) => {
   res.status(200).json({
     status: "Success",
     message: "hellow from server",
