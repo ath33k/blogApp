@@ -8,9 +8,9 @@ export default ({ mode }) => {
   return defineConfig({
     plugins: [react()],
 
-    define: {
-      "process.env.VITE_BACKEND_URL": JSON.stringify(env),
-    },
+    // define: {
+    //   "process.env.VITE_BACKEND_URL": JSON.stringify(env),
+    // },
     server: {
       proxy: {
         "/api": {
