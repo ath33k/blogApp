@@ -9,14 +9,12 @@ export default ({ mode }) => {
     plugins: [react()],
 
     define: {
-      "process.env.VITE_BACKEND_URL": JSON.stringify(
-        process.env.VITE_BACKEND_URL
-      ),
+      VITE_BACKEND_URL: JSON.stringify(process.env.VITE_BACKEND_URL),
     },
     server: {
       proxy: {
         "/api": {
-          target: process.env.VITE_BACKEND_URL,
+          target: env.VITE_BACKEND_URL,
           changeOrigin: true,
           secure: true,
         },
