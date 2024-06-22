@@ -12,7 +12,7 @@ export default ({ mode }) => {
         "/api": {
           target: env.VITE_BACKEND_URL,
           changeOrigin: true,
-          secure: false,
+          secure: true,
         },
       },
     },
