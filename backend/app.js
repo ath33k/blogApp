@@ -22,16 +22,16 @@ app.use(cookieParser());
 
 // ROUTES
 //mounting routes
+app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/posts", postRoutes);
+
+// to all routes that doesnt hit any of the aboove middlewares (Invalid routes)
 app.get("/", (req, res, next) => {
   res.status(200).json({
     status: "Success",
     message: "hellow from server",
   });
 });
-app.use("/api/v1/users", userRoutes);
-app.use("/api/v1/posts", postRoutes);
-
-// to all routes that doesnt hit any of the aboove middlewares (Invalid routes)
 app.all("*", (req, res, next) => {
   // when we pass something thourgh next()
   //fucniton express automatically detecs as an error
