@@ -6,8 +6,6 @@ export default ({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   const BACKEND_URL = env.VITE_BACKEND_URL;
   return defineConfig({
-    plugins: [react()],
-
     define: {
       "process.env.VITE_BACKEND_URL": JSON.stringify(
         process.env.VITE_BACKEND_URL
@@ -18,10 +16,11 @@ export default ({ mode }) => {
         "/api": {
           target: BACKEND_URL,
           changeOrigin: true,
-          secure: true,
+          secure: false,
         },
       },
     },
+    plugins: [react()],
   });
 };
 // export default defineConfig({
