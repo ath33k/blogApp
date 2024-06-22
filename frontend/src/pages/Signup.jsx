@@ -14,12 +14,15 @@ export const Signup = ({ setLoggedUser }) => {
     console.log("clicked");
 
     try {
-      const response = await axios.post("/api/v1/users/signup", {
-        name: name,
-        email: email,
-        password: password,
-        passwordConfirm: confirmPassword,
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/signup`,
+        {
+          name: name,
+          email: email,
+          password: password,
+          passwordConfirm: confirmPassword,
+        }
+      );
       const responseData = response.data.data;
       // setLoggedUser(responseData.user);
       location.assign("/");

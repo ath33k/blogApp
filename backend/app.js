@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
@@ -8,7 +9,13 @@ const CustomeError = require("./utils/customError");
 
 const app = express();
 // GLOBAL MIDDLEWARES
-
+app.use(
+  cors({
+    origin: [process.env.FRONTEND_URL],
+    methods: ["POST", "GET", "PATCH", "DELETE"],
+    credentials: true,
+  })
+);
 // DEVELOPMENT LOGGING
 console.log(`---${process.env.NODE_ENV}---`);
 if (process.env.NODE_ENV === "development") {
@@ -32,6 +39,7 @@ app.get("/", (req, res, next) => {
     message: "hellow from server",
   });
 });
+
 app.all("*", (req, res, next) => {
   // when we pass something thourgh next()
   //fucniton express automatically detecs as an error

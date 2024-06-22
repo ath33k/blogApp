@@ -14,10 +14,13 @@ export const Login = ({ setLoggedUser }) => {
     setBackDropOpen(true);
 
     try {
-      const response = await axios.post("/api/v1/users/login", {
-        email: email,
-        password: password,
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/login`,
+        {
+          email: email,
+          password: password,
+        }
+      );
       const responseData = response.data.data;
       console.log(response);
       // setLoggedUser(responseData.user);
