@@ -22,7 +22,8 @@ function App() {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/auth`
+          `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/auth`,
+          { withCredentials: true }
         );
 
         setLoggedUser(response.data.user);
