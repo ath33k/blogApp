@@ -13,7 +13,7 @@ const app = express();
 // app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 const corsOptions = {
-  origin: [[process.env.FRONTEND_URL]],
+  origin: `${process.env.FRONTEND_URL}`,
   optionsSuccessStatus: 200,
   credentials: true,
 };
