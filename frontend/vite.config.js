@@ -16,7 +16,7 @@ export default ({ mode }) => {
     server: {
       proxy: {
         "/api": {
-          target: import.meta.env.VITE_BACKEND_URL,
+          target: process.env.VITE_BACKEND_URL,
           changeOrigin: true,
           secure: true,
         },
