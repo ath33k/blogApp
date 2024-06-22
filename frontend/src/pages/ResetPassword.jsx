@@ -13,13 +13,10 @@ const ResetPassword = ({ loggedUser }) => {
     e.preventDefault();
 
     try {
-      const response = await axios.patch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/resetPassword/${id}`,
-        {
-          newPassword: newPassword,
-          newPasswordConfirm: confirmPassword,
-        }
-      );
+      const response = await axios.patch(`/api/v1/users/resetPassword/${id}`, {
+        newPassword: newPassword,
+        newPasswordConfirm: confirmPassword,
+      });
       location.assign("/");
       console.log();
     } catch (err) {

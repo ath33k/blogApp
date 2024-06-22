@@ -26,10 +26,7 @@ export default function CreatePost({ loggedUser }) {
       fields.category = otherCategory;
     }
 
-    const response = await axios.post(
-      `${import.meta.env.VITE_BACKEND_URL}/api/v1/posts`,
-      fields
-    );
+    const response = await axios.post(`/api/v1/posts`, fields);
     console.log(response);
     location.assign(`/post/${response.data.data._id}`);
   };

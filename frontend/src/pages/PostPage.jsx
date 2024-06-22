@@ -53,9 +53,7 @@ const PostPage = ({ setLoggedUser, loggedUser }) => {
   useEffect(() => {
     const fetchpost = async () => {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/v1/posts/${id}`
-        );
+        const response = await axios.get(`/api/v1/posts/${id}`);
 
         setData(response.data.data);
         // setLoggedUser(response.data.user);

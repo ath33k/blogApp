@@ -15,7 +15,7 @@ export const Login = ({ setLoggedUser }) => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/login`,
+        `/api/v1/users/login`,
         {
           email: email,
           password: password,

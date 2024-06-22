@@ -21,10 +21,9 @@ function App() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/auth`,
-          { withCredentials: true }
-        );
+        const response = await axios.get(`/api/v1/users/auth`, {
+          withCredentials: true,
+        });
 
         setLoggedUser(response.data.user);
         setAuthenticated(true);
