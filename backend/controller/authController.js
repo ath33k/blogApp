@@ -23,13 +23,15 @@ const sendTokenAndResponse = (user, statusCode, res) => {
     expires: new Date(
       Date.now() + process.env.COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
-    httpOnly: true,
+    secure: true,
+    sameSite: "none",
   };
   // only communicate through https when in production environment
   if (process.env.NODE_ENV == "production") cookieOptions.secure = true;
 
   // Cookie name, value as the token, options
   res.cookie("jwt", token, cookieOptions);
+
   user.password = undefined;
 
   res.status(201).json({
