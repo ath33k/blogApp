@@ -18,14 +18,14 @@ const app = express();
 //   credentials: true,
 // };
 
-// const corsOptions = {
-//   origin: `${process.env.FRONTEND_URL}/*`,
-//   optionsSuccessStatus: 200,
-//   credentials: true,
-// };
+const corsOptions = {
+  origin: `${process.env.FRONTEND_URL}/*`,
+  optionsSuccessStatus: 200,
+  credentials: true,
+};
 
-// app.options("*", cors(corsOptions));
-// app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+app.use(cors(corsOptions));
 // app.options("*", function (req, res) {
 //   res.status(200);
 // });

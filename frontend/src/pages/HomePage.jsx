@@ -21,7 +21,11 @@ export default function HomePage({
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get(`/api/v1/posts?page=${page}&limit=5`);
+        const response = await axios.get(
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/api/v1/posts?page=${page}&limit=5`
+        );
 
         setData(response.data.data);
         setPageCount(response.data.totalPages);
