@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => {
         "/api": {
           target: "https://blog-app-backend-ivory-ten.vercel.app",
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ""),
+          secure: false,
         },
       },
     },
