@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         "/api": {
-          target: env.VITE_BACKEND_URL,
+          target: "https://blog-app-backend-ivory-ten.vercel.app",
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ""),
         },
