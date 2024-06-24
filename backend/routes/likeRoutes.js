@@ -13,6 +13,9 @@ router
     likeController.createLike
   );
 
-router.route("/:id").get().delete();
+router
+  .route("/:id")
+  .get(likeController.getLike)
+  .delete(authController.protect, likeController.deleteLike);
 
 module.exports = router;

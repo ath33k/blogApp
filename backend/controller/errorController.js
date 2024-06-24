@@ -32,7 +32,7 @@ const sendErrorDev = (err, res) => {
   } else {
     // programming or other unknow error.
     // Do not leak error deatils
-    console.log("ERROR 🔥", err);
+    console.log("ERROR 🔥", err.isOperational);
     res.status(500).json({
       status: "error",
       message: "Something went wrong",
@@ -43,14 +43,18 @@ const sendErrorDev = (err, res) => {
 module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
+  let error = { ...err };
+  console.log(err.name);
   if (process.env.NODE_ENV == "development") {
-    sendErrorDev(err, res);
-  } else if (process.env.NODE_ENV == "production") {
-    let error = { ...err };
-    if (error.name === "ValidationError")
-      error = handleValidationErrorDB(error);
+    if (err.name === "ValidationError") error = handleValidationErrorDB(err);
 
-    if (err.name === "CastError") error = handleCastErrorDB(error);
+    if (err.name === "CastError") error = handleCastErrorDB(err);
+
+    sendErrorDev(error, res);
+  } else if (process.env.NODE_ENV == "production") {
+    if (err.name === "ValidationError") error = handleValidationErrorDB(err);
+
+    if (err.name === "CastError") error = handleCastErrorDB(err);
 
     sendErrorProd(error, res);
   }

@@ -39,7 +39,19 @@ exports.createLike = catchAsyncErr(async (req, res, next) => {
   res.status(201).json({
     status: "success",
     data: {
-      review: newLike,
+      like: newLike,
     },
+  });
+});
+
+exports.deleteLike = catchAsyncErr(async (req, res, next) => {
+  const deleteLike = await Like.findByIdAndDelete(req.params.id);
+
+  if (!deleteLike) {
+    return next(new CustomError("Couldn't found like id", 401));
+  }
+  res.status(204).json({
+    status: "success",
+    data: null,
   });
 });

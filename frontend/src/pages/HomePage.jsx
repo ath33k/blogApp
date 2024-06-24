@@ -64,6 +64,7 @@ export default function HomePage({
               {data.map((el) => (
                 <PostCardLong
                   key={el._id}
+                  loggedUser={loggedUser}
                   postId={el._id}
                   heading={el.heading}
                   content={el.content}
