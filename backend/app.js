@@ -5,6 +5,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
+const likeRoutes = require("./routes/likeRoutes");
 const globalErrorHandler = require("./controller/errorController");
 const CustomeError = require("./utils/customError");
 
@@ -51,6 +52,7 @@ app.use(cookieParser());
 //mounting routes
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/posts", postRoutes);
+app.use("/api/v1/likes", likeRoutes);
 
 // to all routes that doesnt hit any of the aboove middlewares (Invalid routes)
 app.get("/", (req, res, next) => {
