@@ -50,13 +50,50 @@ export default function HomePage({
       <div className="grid-1 w-full">
         <HeaderCarousel />
       </div>
-      <div className="grid-2 bg-white">GRID 2</div>
-      <div className="grid-3">
-        <div className="grid-3-container gap-4 p-2"></div>
+      <div className="grid-2 bg-white">
+        <div className="flex justify-center gap-4">
+          <button>Recents</button>
+          <button>Health</button>
+          <button>Family</button>
+        </div>
       </div>
-      <div className="grid-4 border-l-4 rounded-md p-2">
-        <h2 className="text-lg pl-2 bg-blue-200">Topics</h2>
-        <div className="flex flex-col gap-2 p-2"></div>
+      <div className="grid-3">
+        <div className="grid-3-container gap-4 p-2 ">
+          <div className="rounded-xl flex flex-col gap-4 p-2">
+            <div className="flex flex-col gap-2">
+              {data.map((el) => (
+                <PostCardLong
+                  key={el._id}
+                  postId={el._id}
+                  heading={el.heading}
+                  content={el.content}
+                  setselectedId={setselectedId}
+                />
+              ))}
+            </div>
+
+            <Pagination
+              className="bg-white rounded-xl p-2"
+              count={pageCount}
+              page={page}
+              onChange={(e, pageNumber) => setPage(pageNumber)}
+              color="primary"
+            ></Pagination>
+          </div>
+        </div>
+      </div>
+      <div className="grid-4 border-l-4 rounded-md pl-8 ">
+        <h3 className=" italic">Trending</h3>
+        <div className="pt-6 flex flex-col gap-2">
+          {data.map((el) => (
+            <PostCardSmall
+              key={el._id}
+              postId={el._id}
+              heading={el.heading}
+              setselectedId={setselectedId}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

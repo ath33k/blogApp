@@ -1,5 +1,5 @@
 import React from "react";
-import svg from "./../assets/react.svg";
+import svg from "./../assets/ss.png";
 import { Link } from "react-router-dom";
 
 const PostCardSmall = ({ heading, content, postId, setselectedId }) => {
@@ -9,11 +9,10 @@ const PostCardSmall = ({ heading, content, postId, setselectedId }) => {
   };
   return (
     <Link to={`/post/${postId}`} onClick={handlePostClick}>
-      <div className="flex rounded-md gap-4 p-4 bg-white">
-        <img src={svg} />
+      <div className="flex rounded-md gap-2 bg-white">
         <div className="md:w-5/6 sm:w-3/4">
-          <h2>{heading}</h2>
-          <p>{content}</p>
+          <span className="text-xs">Category</span>
+          <h2 className="text-base font-semibold">{heading}</h2>
         </div>
       </div>
     </Link>
