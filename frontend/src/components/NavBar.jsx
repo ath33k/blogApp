@@ -34,7 +34,7 @@ export const NavBar = ({
   }
 
   return (
-    <nav className="w-screen">
+    <nav className="w-full">
       <div className="flex justify-between items-center bg-slate-200 px-8">
         <h1>Blog</h1>
 

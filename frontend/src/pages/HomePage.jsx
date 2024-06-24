@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import PostCard from "../components/PostCardLong";
 import PostCardSmall from "../components/PostCardSmall";
 import PostCardLong from "../components/PostCardLong";
+import HeaderCarousel from "../components/HeaderCarousel";
 
 export default function HomePage({
   loggedUser,
@@ -45,7 +46,24 @@ export default function HomePage({
     return <div>Loading..</div>;
   }
   return (
-    <>
+    <div className="home-grid-container">
+      <div className="grid-1 w-full">
+        <HeaderCarousel />
+      </div>
+      <div className="grid-2 bg-white">GRID 2</div>
+      <div className="grid-3">
+        <div className="grid-3-container gap-4 p-2"></div>
+      </div>
+      <div className="grid-4 border-l-4 rounded-md p-2">
+        <h2 className="text-lg pl-2 bg-blue-200">Topics</h2>
+        <div className="flex flex-col gap-2 p-2"></div>
+      </div>
+    </div>
+  );
+}
+
+{
+  /* <>
       <div>
         <div className="grid-container gap-8 md:gap-10 sm:p-8 md:px-24">
           <div className=" rounded-xl flex flex-col gap-4 p-2 bg-blue-900">
@@ -74,6 +92,5 @@ export default function HomePage({
           </div>
         </div>
       </div>
-    </>
-  );
+    </> */
 }
