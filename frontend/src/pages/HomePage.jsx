@@ -5,6 +5,7 @@ import PostCard from "../components/PostCardLong";
 import PostCardSmall from "../components/PostCardSmall";
 import PostCardLong from "../components/PostCardLong";
 import HeaderCarousel from "../components/HeaderCarousel";
+import HomeTabs from "../components/HomeTabs";
 
 export default function HomePage({
   loggedUser,
@@ -16,6 +17,7 @@ export default function HomePage({
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState();
   const [data, setData] = useState([]);
+  const [tabSelection, setTabSelection] = useState("recents");
 
   // const [isLoading, setLoading] = useState(true);
 
@@ -51,11 +53,7 @@ export default function HomePage({
         <HeaderCarousel />
       </div>
       <div className="grid-2 bg-white">
-        <div className="flex justify-center gap-4">
-          <button>Recents</button>
-          <button>Health</button>
-          <button>Family</button>
-        </div>
+        <HomeTabs />
       </div>
       <div className="grid-3">
         <div className="grid-3-container gap-4 p-2 ">

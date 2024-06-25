@@ -5,21 +5,33 @@ const Post = require("../model/postsModel");
 
 exports.getAllPosts = catchAsyncErr(async (req, res, next) => {
   try {
-    const features = new APIFeatures(Post.find(), req.query)
-      .filter()
-      .sort()
-      .limitFields()
-      .paginate();
+    let posts;
+    if (req.query.random) {
+      posts = await Post.aggregate([
+        { $sample: { size: req.query.random * 1 } },
+      ]);
 
-    const posts = await features.query;
-    const count = await Post.find().countDocuments();
+      res.status(200).json({
+        status: "success",
+        results: posts.length,
+        data: posts,
+      });
+    } else {
+      const features = new APIFeatures(Post.find(), req.query)
+        .filter()
+        .sort()
+        .limitFields()
+        .paginate();
 
-    res.status(200).json({
-      status: "success",
-      results: posts.length,
-      data: posts,
-      totalPages: Math.ceil(count / (req.query.limit || 5)),
-    });
+      posts = await features.query;
+      const count = await Post.find().countDocuments();
+      res.status(200).json({
+        status: "success",
+        results: posts.length,
+        data: posts,
+        totalPages: Math.ceil(count / (req.query.limit || 5)),
+      });
+    }
   } catch (err) {
     next(err);
   }
