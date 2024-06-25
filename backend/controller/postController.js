@@ -34,6 +34,7 @@ exports.getPost = catchAsyncErr(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     data: post,
+    // likeCount: post.likeCount,
   });
 });
 

@@ -30,6 +30,7 @@ exports.getLike = catchAsyncErr(async (req, res, next) => {
 });
 
 exports.createLike = catchAsyncErr(async (req, res, next) => {
+  console.log(req.body);
   const newLike = await Like.create(req.body);
 
   if (!newLike) {

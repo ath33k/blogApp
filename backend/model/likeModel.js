@@ -20,7 +20,7 @@ const likeModelSchema = new mongoose.Schema(
     customId: {
       type: String,
       unique: true,
-      required: true,
+      // required: true,
     },
   },
   {
@@ -31,10 +31,11 @@ const likeModelSchema = new mongoose.Schema(
 
 likeModelSchema.index({ post: 1, user: 1 }, { unique: true });
 
-likeModelSchema.pre("save", async function (next) {
+likeModelSchema.pre("save", function (next) {
   if (!this.customId) {
     this.customId = `${this.user}_${this.post}`;
   }
+
   next();
 });
 
