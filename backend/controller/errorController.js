@@ -1,7 +1,8 @@
 const CustomError = require("../utils/customError");
 
 const handleValidationErrorDB = (err) => {
-  const errors = Object.values(err.error).map((el) => el.message);
+  // const errObj = { ...err };
+  const errors = Object.values(err.errors).map((el) => el.message);
 
   const message = `Invalid input data. ${errors.join(". ")}`;
   return new CustomError(message, 400);
@@ -55,18 +56,21 @@ module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
   let error = { ...err };
-  if (process.env.NODE_ENV == "development") {
-    if (err.name === "ValidationError") error = handleValidationErrorDB(err);
 
-    if (err.name === "CastError") error = handleCastErrorDB(err);
-    if (err.name === "MongoServerError") error = handleMongoServerErrorDB(err);
+  if (process.env.NODE_ENV == "development") {
+    if (err.name === "ValidationError") error = handleValidationErrorDB(error);
+
+    if (err.name === "CastError") error = handleCastErrorDB(error);
+    if (err.name === "MongoServerError")
+      error = handleMongoServerErrorDB(error);
 
     sendErrorDev(error, res);
   } else if (process.env.NODE_ENV == "production") {
-    if (err.name === "ValidationError") error = handleValidationErrorDB(err);
+    if (err.name === "ValidationError") error = handleValidationErrorDB(error);
 
-    if (err.name === "CastError") error = handleCastErrorDB(err);
-    if (err.name === "MongoServerError") error = handleMongoServerErrorDB(err);
+    if (err.name === "CastError") error = handleCastErrorDB(error);
+    if (err.name === "MongoServerError")
+      error = handleMongoServerErrorDB(error);
 
     sendErrorProd(error, res);
   }

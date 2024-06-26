@@ -6,14 +6,36 @@ const postsSchema = new mongoose.Schema(
       type: String,
       required: [true, "A post must have a heading"],
     },
+    description: {
+      type: String,
+      required: [true, "A post must have a description"],
+    },
     content: {
       type: String,
       required: [true, "A post must have a content"],
     },
     category: {
-      type: String,
-      required: [true, "A post should have a category"],
+      type: [String],
+      required: [true, "please confirm your category"],
+      enum: [
+        "education",
+        "technology",
+        "finance",
+        "health",
+        "travel",
+        "fashion",
+        "food",
+        "other",
+      ],
+      default: ["other"],
+      validate: {
+        validator: function (arr) {
+          return arr.length > 0;
+        },
+        message: "Category field count cannot be empty",
+      },
     },
+
     createdAt: {
       type: Date,
       default: Date.now(),

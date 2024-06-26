@@ -51,9 +51,11 @@ exports.getPost = catchAsyncErr(async (req, res, next) => {
 });
 
 exports.createPost = catchAsyncErr(async (req, res, next) => {
+  console.log(req.body);
   const newPost = await Post.create({
     heading: req.body.heading,
     content: req.body.content,
+    description: req.body.description,
     category: req.body.category,
   });
 
