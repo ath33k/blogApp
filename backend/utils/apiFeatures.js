@@ -13,12 +13,23 @@ class APIFeatures {
 
     // prefixing with '$' for query string with greater, lesser or greater and lesser than equal queries
     let queryString = JSON.stringify(queryStringObj);
+
     queryString = queryString.replace(
       /\b(gte|gt|lte|lt)\b/,
       (match) => `$${match}`
     );
 
-    this.query = this.query.find(JSON.parse(queryString));
+    queryString = JSON.parse(queryString);
+
+    if (this.queryString.categoryId) {
+      this.query.find({
+        category: {
+          $elemMatch: { $eq: this.queryString.categoryId },
+        },
+      });
+    }
+
+    // this.query = this.query.find(JSON.parse(queryString));
     return this;
   }
 
@@ -26,8 +37,10 @@ class APIFeatures {
     if (this.queryString.sort) {
       // ?sort=date,likes
       const sortBy = this.queryString.sort.split(",").join(" ");
-      console.log(sortBy);
+
       this.query = this.query.sort(sortBy);
+
+      // if(sortBy)
     } else {
       // '-'prefix is descending
       this.query = this.query.sort("-createdAt -_id");

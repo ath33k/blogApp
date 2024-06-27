@@ -24,7 +24,9 @@ exports.getAllPosts = catchAsyncErr(async (req, res, next) => {
         .paginate();
 
       posts = await features.query;
+
       const count = await Post.find().countDocuments();
+      console.log(count);
       res.status(200).json({
         status: "success",
         results: posts.length,
@@ -38,7 +40,10 @@ exports.getAllPosts = catchAsyncErr(async (req, res, next) => {
 });
 
 exports.getPost = catchAsyncErr(async (req, res, next) => {
-  const post = await Post.findById(req.params.id).populate("likes");
+  const post = await Post.findById(req.params.id)
+    .populate("likes")
+    .populate("category");
+
   if (!post) {
     return next(new CustomError(`Post not found`, 404));
   }
@@ -62,6 +67,31 @@ exports.createPost = catchAsyncErr(async (req, res, next) => {
   res.status(201).json({
     status: "success",
     data: newPost,
+  });
+});
+
+exports.updatePost = catchAsyncErr(async (req, res, next) => {
+  const post = await Post.findByIdAndUpdate(
+    req.params.id,
+    {
+      heading: req.body.heading,
+      content: req.body.content,
+      description: req.body.description,
+      $push: { category: req.body.category },
+      // category: req.body.category,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+  if (!post) {
+    return next(new CustomError("Couldn't update", 500));
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: post,
   });
 });
 

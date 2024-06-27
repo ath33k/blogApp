@@ -14,27 +14,49 @@ const postsSchema = new mongoose.Schema(
       type: String,
       required: [true, "A post must have a content"],
     },
+    // category: [
+    //   {
+    //     type: mongoose.Schema.ObjectId,
+    //     ref: "Category",
+    //     required: [true, "A post must have a category"],
+    //   },
+    // ],
     category: {
-      type: [String],
-      required: [true, "please confirm your category"],
-      enum: [
-        "education",
-        "technology",
-        "finance",
-        "health",
-        "travel",
-        "fashion",
-        "food",
-        "other",
+      type: [
+        {
+          type: mongoose.Schema.ObjectId,
+          ref: "Category",
+          required: [true, "A post must have a category"],
+        },
       ],
-      default: ["other"],
       validate: {
         validator: function (arr) {
           return arr.length > 0;
         },
-        message: "Category field count cannot be empty",
+        message: "Category cannot be empty",
       },
     },
+    // category: {
+    //   type: [String],
+    //   required: [true, "please confirm your category"],
+    //   enum: [
+    //     "education",
+    //     "technology",
+    //     "finance",
+    //     "health",
+    //     "travel",
+    //     "fashion",
+    //     "food",
+    //     "other",
+    //   ],
+    //   default: ["other"],
+    //   validate: {
+    //     validator: function (arr) {
+    //       return arr.length > 0;
+    //     },
+    //     message: "Category field count cannot be empty",
+    //   },
+    // },
 
     createdAt: {
       type: Date,
@@ -56,6 +78,19 @@ postsSchema.virtual("likes", {
   foreignField: "post",
   localField: "_id",
 });
+
+postsSchema.pre(/^find/, function (next) {
+  // if (req.query.category) {
+  //   this.find({ category: req.query.category });
+  // }
+  next();
+});
+
+// postsSchema.virtual("categories", {
+//   ref: "Category",
+//   foreignField: "post",
+//   localField: "_id",
+// });
 
 const Post = mongoose.model("Post", postsSchema);
 

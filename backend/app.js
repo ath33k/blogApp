@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
 const likeRoutes = require("./routes/likeRoutes");
+const categoryRoutes = require("./routes/categoryRoutes");
 const globalErrorHandler = require("./controller/errorController");
 const CustomeError = require("./utils/customError");
 
@@ -53,6 +54,7 @@ app.use(cookieParser());
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/posts", postRoutes);
 app.use("/api/v1/likes", likeRoutes);
+app.use("/api/v1/categories", categoryRoutes);
 
 // to all routes that doesnt hit any of the aboove middlewares (Invalid routes)
 app.get("/", (req, res, next) => {
