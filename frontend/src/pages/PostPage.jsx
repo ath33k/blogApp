@@ -13,16 +13,20 @@ import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useLoggedUser } from "../context/UserProvider";
 
-const PostPage = ({ setLoggedUser, loggedUser }) => {
+const PostPage = () => {
+  const { loggedUser, isAuthenticated, isLoading } = useLoggedUser();
   const [data, setData] = useState();
-  const [isLoading, setLoading] = useState(true);
+  const [postLoading, setPostLoading] = useState(true);
   const { id } = useParams();
   const [anchorEl, setAnchorEl] = useState(null);
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const open = Boolean(anchorEl);
   const popoverId = open ? "simple-popover" : undefined;
+
+  console.log(data);
 
   const handleModelOpen = () => setIsModelOpen(true);
   const handleModelClose = () => setIsModelOpen(false);
@@ -58,17 +62,17 @@ const PostPage = ({ setLoggedUser, loggedUser }) => {
         );
 
         setData(response.data.data);
-        // setLoggedUser(response.data.user);
-        setLoading(false);
-        console.log(response);
+        setPostLoading(false);
+        console.log(response.data.data);
       } catch (err) {
-        setLoading(false);
+        setPostLoading(false);
         console.log(err);
       }
     };
     fetchpost();
-  }, [id, setLoggedUser]);
-  if (isLoading) {
+  }, [id]);
+
+  if (postLoading) {
     return <div>Loading...</div>;
   }
   return (
@@ -87,7 +91,10 @@ const PostPage = ({ setLoggedUser, loggedUser }) => {
       <div className="flex flex-col gap-2 p-4 px-8">
         <div>
           <h1>{data.heading}</h1>
-          <span>Category: {data.category}</span>
+          {data.category.map((el) => (
+            <span key={el._id}>Category: {el.name}</span>
+          ))}
+
           <p>{data.content}</p>
         </div>
         {loggedUser && (

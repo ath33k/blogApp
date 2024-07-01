@@ -3,7 +3,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { redirect } from "react-router-dom";
 
-export const Login = ({ setLoggedUser }) => {
+export const Login = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [backDropOpen, setBackDropOpen] = useState(false);

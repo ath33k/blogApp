@@ -3,11 +3,14 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Button, IconButton } from "@mui/material";
 import axios, { all } from "axios";
+import { useLoggedUser } from "../context/UserProvider";
 
-function Like({ postId, loggedUser }) {
+function Like({ postId }) {
   const [isLiked, setIsliked] = useState(false);
   const [likeId, setLikeId] = useState("");
   const [likeCount, setLikeCount] = useState(0);
+  const { loggedUser, isAuthenticated, isLoading } = useLoggedUser();
+
   const handleLikeClick = async () => {
     try {
       if (isLiked && likeId) {

@@ -9,12 +9,15 @@ import {
 import axios from "axios";
 import { useState } from "react";
 import NotLoggedInMsg from "../components/NotLoggedInMsg";
+import { useLoggedUser } from "../context/UserProvider";
 
-export default function CreatePost({ loggedUser }) {
+export default function CreatePost() {
+  const { loggedUser, isAuthenticated, isLoading } = useLoggedUser();
   const [title, setTitle] = useState();
   const [category, setCategory] = useState("other");
   const [otherCategory, setOtherCategory] = useState();
   const [content, setContent] = useState();
+
   const handlePostCreation = async (e) => {
     e.preventDefault();
     const fields = {

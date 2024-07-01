@@ -11,6 +11,8 @@ exports.getAllPosts = catchAsyncErr(async (req, res, next) => {
         { $sample: { size: req.query.random * 1 } },
       ]);
 
+      await Post.populate(posts, { path: "category" });
+
       res.status(200).json({
         status: "success",
         results: posts.length,
@@ -40,9 +42,8 @@ exports.getAllPosts = catchAsyncErr(async (req, res, next) => {
 });
 
 exports.getPost = catchAsyncErr(async (req, res, next) => {
-  const post = await Post.findById(req.params.id)
-    .populate("likes")
-    .populate("category");
+  const post = await Post.findById(req.params.id).populate("likes");
+  // .populate("category");
 
   if (!post) {
     return next(new CustomError(`Post not found`, 404));

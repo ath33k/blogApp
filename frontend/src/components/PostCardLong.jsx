@@ -6,14 +6,16 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { IconButton } from "@mui/material";
 import axios, { all } from "axios";
 import Like from "./Like";
+import { useLoggedUser } from "../context/UserProvider";
 
 const PostCardLong = ({
-  heading,
-  content,
+  post,
   postId,
   setselectedId,
-  loggedUser,
+  // loggedUser,
 }) => {
+  const { loggedUser, isAuthenticated, isLoading } = useLoggedUser();
+
   const handlePostClick = () => {
     setselectedId(postId);
     localStorage.setItem("postId", postId);
@@ -23,9 +25,14 @@ const PostCardLong = ({
     <div className="flex hover:rounded-md gap-4 p-4 bg-white border-b-2 justify-between items-center filter  hover:drop-shadow-lg duration-300 transition-all ">
       <div className="flex flex-col items-start">
         <Link to={`/post/${postId}`} onClick={handlePostClick}>
-          <span className="text-xs md:text-sm">category</span>
-          <h2 className="text-xl md:text-2xl font-bold">{heading}</h2>
-          <p className="text-sm md:text-base">{content}</p>
+          {post.category.map((el) => (
+            <span key={el._id} className="text-xs md:text-sm">
+              {el.className}
+            </span>
+          ))}
+
+          <h2 className="text-xl md:text-2xl font-bold">{post.heading}</h2>
+          <p className="text-sm md:text-base">{post.content}</p>
         </Link>
         <Like loggedUser={loggedUser} postId={postId} />
       </div>

@@ -22,12 +22,14 @@ import ChangePassword from "../components/ChangePassword";
 import ResetPassword from "../components/ResetPassword";
 import UserInfo from "../components/UserInfo";
 import NotLoggedInMsg from "../components/NotLoggedInMsg";
+import { useLoggedUser } from "../context/UserProvider";
 
-const Profile = ({ loggedUser }) => {
+const Profile = () => {
   const [selectedListIndex, setSelectedListIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState(touchRippleClasses);
+  const [ProfileLoading, setProfileLoading] = useState();
   const [resetModel, setResetModel] = useState(false);
   const [resetData, setResetData] = useState();
+  const { loggedUser, isAuthenticated, isLoading } = useLoggedUser();
 
   const handleListClick = (event, value) => {
     setSelectedListIndex(value);
@@ -35,15 +37,15 @@ const Profile = ({ loggedUser }) => {
 
   useEffect(() => {
     if (loggedUser) {
-      setIsLoading(false);
+      setProfileLoading(false);
     } else {
       setTimeout(() => {
-        setIsLoading(false);
+        setProfileLoading(false);
       }, 3000);
     }
   }, [loggedUser]);
 
-  if (isLoading) {
+  if (ProfileLoading) {
     return (
       <>
         <Backdrop
@@ -80,7 +82,7 @@ const Profile = ({ loggedUser }) => {
             <div className="">
               {/* slected user info */}
               {selectedListIndex == 0 && (
-                <UserInfo loggedUser={loggedUser} isLoading={isLoading} />
+                <UserInfo loggedUser={loggedUser} isLoading={ProfileLoading} />
               )}
               {selectedListIndex == 1 && <ChangePassword />}
               {selectedListIndex == 2 && (

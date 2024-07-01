@@ -3,8 +3,10 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import NotLoggedInMsg from "../components/NotLoggedInMsg";
+import { useLoggedUser } from "../context/UserProvider";
 
-const ResetPassword = ({ loggedUser }) => {
+const ResetPassword = () => {
+  const { loggedUser, isAuthenticated, isLoading } = useLoggedUser();
   const { id } = useParams();
   const [newPassword, setNewPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();

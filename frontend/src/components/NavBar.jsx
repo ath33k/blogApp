@@ -2,18 +2,22 @@ import { Avatar, Chip } from "@mui/material";
 import axios from "axios";
 import React, { useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useLoggedUser } from "../context/UserProvider";
 
-export const NavBar = ({
-  loggedUser,
-  isLoading,
-  setLoading,
-  isAuthenticated,
-}) => {
-  useEffect(() => {
-    if (loggedUser) {
-      setLoading(false);
-    }
-  }, [loggedUser, setLoading]);
+export const NavBar = (
+  {
+    // loggedUser,
+    // isLoading,
+    // // setLoading,
+    // // isAuthenticated,
+  }
+) => {
+  const { loggedUser, isAuthenticated, isLoading } = useLoggedUser();
+  // useEffect(() => {
+  //   if (loggedUser) {
+  //     setLoading(false);
+  //   }
+  // }, [loggedUser, setLoading]);
 
   const handleLogout = async () => {
     try {

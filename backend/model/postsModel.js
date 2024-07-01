@@ -80,6 +80,7 @@ postsSchema.virtual("likes", {
 });
 
 postsSchema.pre(/^find/, function (next) {
+  this.populate({ path: "category" });
   // if (req.query.category) {
   //   this.find({ category: req.query.category });
   // }
