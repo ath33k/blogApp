@@ -7,9 +7,13 @@ import { useEffect } from "react";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import EditIcon from "@mui/icons-material/Edit";
 import UpdateIcon from "@mui/icons-material/Update";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+
+const storage = getStorage();
 
 const UserInfo = ({ loggedUser }) => {
-  const [profilePicture, setProfilePicture] = useState(false);
+  const [profilePicture, setProfilePicture] = useState(undefined);
+  const [avatarUrl, setAvatarUrl] = useState("");
   const [DPImageUrl, setDPImageURL] = useState();
   const [selectedPreviewImage, setSelectedPreviewImage] = useState(false);
   const [isInputDisabled, setIsInputDisabled] = useState(true);
@@ -18,10 +22,17 @@ const UserInfo = ({ loggedUser }) => {
   const [email, setEmail] = useState();
 
   useEffect(() => {
-    console.log("ss");
-    setName(loggedUser.name);
-    setEmail(loggedUser.email);
-    setIsloading(false);
+    const setupUser = async () => {
+      console.log("ss");
+      setName(loggedUser.name);
+      setEmail(loggedUser.email);
+      const imageRef = ref(storage, `user-images/${loggedUser.image}`);
+
+      const url = await getDownloadURL(imageRef);
+      setAvatarUrl(url);
+      setIsloading(false);
+    };
+    setupUser();
   }, [loggedUser, isInputDisabled]);
 
   const VisuallyHiddenInput = styled("input")({
@@ -45,7 +56,30 @@ const UserInfo = ({ loggedUser }) => {
     setDPImageURL(URL.createObjectURL(profilePicture));
   };
 
-  const handleUpdateSubmission = () => {};
+  const handleUpdateSubmission = async () => {
+    // const fields = {
+    //   name,
+    //   email,
+    //   image: profilePicture,
+    // };
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("image", profilePicture);
+
+    try {
+      const response = await axios.patch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/updateMe`,
+        formData,
+        { withCredentials: true }
+      );
+      setProfilePicture(undefined);
+      window.location.reload(true);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   if (!loggedUser || isLoading) {
     return <h2>Loading...</h2>;
   }
@@ -63,13 +97,12 @@ const UserInfo = ({ loggedUser }) => {
           <div className="flex gap-4">
             <Avatar
               sx={{
-                backgroundColor: "red",
-                padding: "1.5rem",
-                fontSize: "1.5rem",
+                width: "64px",
+                height: "64px",
               }}
-            >
-              {loggedUser.name[0]}
-            </Avatar>
+              src={avatarUrl}
+            />
+
             <div>
               <h3 className="text-xl font-semibold">{loggedUser.name}</h3>
               <h5 className="text-xs">Blog {loggedUser.role}</h5>
@@ -141,7 +174,7 @@ const UserInfo = ({ loggedUser }) => {
             variant="outlined"
             disabled={isInputDisabled}
             onClick={() => {
-              setProfilePicture(false);
+              setProfilePicture(undefined);
               setIsInputDisabled(true);
             }}
           >
@@ -152,14 +185,23 @@ const UserInfo = ({ loggedUser }) => {
           <Button
             variant="contained"
             color="success"
+            // disabled={
+            //   !isInputDisabled
+            //     ? profilePicture == undefined &&
+            //       name == loggedUser.name &&
+            //       email == loggedUser.email
+            //       ? true
+            //       : false
+            //     : true
+            // }
             disabled={
-              !isInputDisabled
-                ? profilePicture == false &&
+              isInputDisabled
+                ? true
+                : profilePicture == undefined &&
                   name == loggedUser.name &&
                   email == loggedUser.email
-                  ? true
-                  : false
-                : true
+                ? true
+                : false
             }
             startIcon={<UpdateIcon />}
             onClick={handleUpdateSubmission}

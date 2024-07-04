@@ -14,13 +14,7 @@ const postsSchema = new mongoose.Schema(
       type: String,
       required: [true, "A post must have a content"],
     },
-    // category: [
-    //   {
-    //     type: mongoose.Schema.ObjectId,
-    //     ref: "Category",
-    //     required: [true, "A post must have a category"],
-    //   },
-    // ],
+
     category: {
       type: [
         {
@@ -36,27 +30,10 @@ const postsSchema = new mongoose.Schema(
         message: "Category cannot be empty",
       },
     },
-    // category: {
-    //   type: [String],
-    //   required: [true, "please confirm your category"],
-    //   enum: [
-    //     "education",
-    //     "technology",
-    //     "finance",
-    //     "health",
-    //     "travel",
-    //     "fashion",
-    //     "food",
-    //     "other",
-    //   ],
-    //   default: ["other"],
-    //   validate: {
-    //     validator: function (arr) {
-    //       return arr.length > 0;
-    //     },
-    //     message: "Category field count cannot be empty",
-    //   },
-    // },
+    coverImage: {
+      type: String,
+      required: [true, "A post must have a cover photo"],
+    },
 
     createdAt: {
       type: Date,

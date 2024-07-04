@@ -77,11 +77,11 @@ exports.login = catchAsyncErr(async (req, res, next) => {
   const user = await User.findOne({ email }).select("+password");
 
   if (!user) return next(new CustomError("user not found", 404));
-  console.log(user);
 
   const correct = await user.correctPassword(password, user.password);
 
   if (!user || !correct) {
+    console.log(user);
     return next(new CustomError("Incorrect email or password", 401));
   }
 
@@ -102,7 +102,9 @@ exports.protect = catchAsyncErr(async (req, res, next) => {
   // }
   const token = req.cookies.jwt;
 
+  console.log(req.file);
   if (!token) {
+    console.log("no token");
     return next(
       new CustomError(" You are not logged In! Pelase log into get access")
     );
@@ -136,37 +138,37 @@ exports.protect = catchAsyncErr(async (req, res, next) => {
   next();
 });
 
-exports.isLoggedIn = async (req, res, next) => {
-  if (req.cookies.jwt) {
-    try {
-      // token verification
-      const decoded = await promisify(jwt.verify)(
-        req.cookies.jwt,
-        process.env.JWT_SECRET
-      );
-      console.log(decoded);
-      // check user still exists
-      // use case: user changed the passsword after the token generation
-      // so we have to change the token by login in again
-      const currentUser = await User.findById(decoded.id);
-      if (!currentUser) {
-        return next();
-      }
+// exports.isLoggedIn = async (req, res, next) => {
+//   if (req.cookies.jwt) {
+//     try {
+//       // token verification
+//       const decoded = await promisify(jwt.verify)(
+//         req.cookies.jwt,
+//         process.env.JWT_SECRET
+//       );
+//       console.log(decoded);
+//       // check user still exists
+//       // use case: user changed the passsword after the token generation
+//       // so we have to change the token by login in again
+//       const currentUser = await User.findById(decoded.id);
+//       if (!currentUser) {
+//         return next();
+//       }
 
-      if (currentUser.passwordChangedAfter(decoded.iat)) {
-        return next();
-      }
+//       if (currentUser.passwordChangedAfter(decoded.iat)) {
+//         return next();
+//       }
 
-      // assigning the usser to request so other routes can access user
-      req.user = currentUser;
+//       // assigning the usser to request so other routes can access user
+//       req.user = currentUser;
 
-      return next();
-    } catch (err) {
-      return next();
-    }
-  }
-  next();
-};
+//       return next();
+//     } catch (err) {
+//       return next();
+//     }
+//   }
+//   next();
+// };
 
 exports.checkLogin = catchAsyncErr(async (req, res, next) => {
   const token = req.cookies.jwt;
@@ -214,6 +216,7 @@ exports.restrictTo = (...roles) => {
   // roles ['admin,'lead-guide']. role='user'
   // req.user is coming from previous middleware (protect) which ran and before this middleware
   return (req, res, next) => {
+    console.log(req.user);
     if (!roles.includes(req.user.role)) {
       return next(
         new CustomError(

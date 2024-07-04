@@ -5,18 +5,6 @@ import { UserProvider, useLoggedUser } from "./../context/UserProvider";
 import axios from "axios";
 
 function HomeTabs({ tabSelection, setTabSelection }) {
-  // const tabs = [
-  //   "Recents",
-  //   "Education",
-  //   "Technology",
-  //   "Finance",
-  //   "Health",
-  //   "Travel",
-  //   "Fashion",
-  //   "Food",
-  //   "Other",
-  // ];
-
   const [tabsData, setTabData] = useState([]);
 
   const [dropDownSelection, setDropDownSelection] = useState("---");

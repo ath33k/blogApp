@@ -1,23 +1,27 @@
 import { Avatar, Chip } from "@mui/material";
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useLoggedUser } from "../context/UserProvider";
+import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
-export const NavBar = (
-  {
-    // loggedUser,
-    // isLoading,
-    // // setLoading,
-    // // isAuthenticated,
-  }
-) => {
+const storage = getStorage();
+
+export const NavBar = () => {
   const { loggedUser, isAuthenticated, isLoading } = useLoggedUser();
-  // useEffect(() => {
-  //   if (loggedUser) {
-  //     setLoading(false);
-  //   }
-  // }, [loggedUser, setLoading]);
+  const [avatarUrl, setAvatarUrl] = useState();
+
+  useEffect(() => {
+    const fetchAvatar = async () => {
+      const imageRef = ref(storage, `user-images/${loggedUser.image}`);
+
+      const url = await getDownloadURL(imageRef);
+      setAvatarUrl(url);
+    };
+    if (loggedUser) {
+      fetchAvatar();
+    }
+  }, [loggedUser]);
 
   const handleLogout = async () => {
     try {
@@ -54,9 +58,17 @@ export const NavBar = (
               <li className="bg-green-500 p-2">Logout</li>
             </Link>
             <Link to={"/profile"}>
-              <li className="p-2 mx-2">
+              <li className="p-2">
                 <Chip
-                  avatar={<Avatar>{loggedUser.name[0]}</Avatar>}
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "black",
+                      color: "white",
+                    },
+                  }}
+                  className=" "
+                  variant="outlined"
+                  avatar={<Avatar src={avatarUrl}>{loggedUser.name[0]}</Avatar>}
                   label={loggedUser.name}
                 />
               </li>

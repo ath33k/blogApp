@@ -7,6 +7,9 @@ import { IconButton } from "@mui/material";
 import axios, { all } from "axios";
 import Like from "./Like";
 import { useLoggedUser } from "../context/UserProvider";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+
+const storage = getStorage();
 
 const PostCardLong = ({
   post,
@@ -15,11 +18,22 @@ const PostCardLong = ({
   // loggedUser,
 }) => {
   const { loggedUser, isAuthenticated, isLoading } = useLoggedUser();
+  const [coverImg, setCoverImg] = useState();
 
   const handlePostClick = () => {
     setselectedId(postId);
     localStorage.setItem("postId", postId);
   };
+
+  useEffect(() => {
+    const fetchCoverImg = async () => {
+      const imageRef = ref(storage, `cover-images/${post.coverImage}`);
+
+      const url = await getDownloadURL(imageRef);
+      setCoverImg(url);
+    };
+    fetchCoverImg();
+  }, [post]);
 
   return (
     <div className="flex hover:rounded-md gap-4 p-4 bg-white border-b-2 justify-between items-center filter  hover:drop-shadow-lg duration-300 transition-all ">
@@ -32,12 +46,12 @@ const PostCardLong = ({
           ))}
 
           <h2 className="text-xl md:text-2xl font-bold">{post.heading}</h2>
-          <p className="text-sm md:text-base">{post.content}</p>
+          <p className="text-sm md:text-base">{post.description}</p>
         </Link>
         <Like loggedUser={loggedUser} postId={postId} />
       </div>
       <img
-        src={logo}
+        src={coverImg}
         className="w-[100px] sm:w-[120px] md:w-[140px] lg:w-[160px] "
       />
     </div>

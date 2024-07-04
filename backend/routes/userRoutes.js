@@ -12,16 +12,17 @@ router.post("/forgotPassword", authController.forgotPassword);
 router.patch("/resetPassword/:token", authController.resetPassword);
 
 router.patch("/updateMyPassword", authController.updatePassword);
-// router.use(authController.isLoggedIn);
 router.use(authController.protect);
-router.get("/logout", authController.logout);
-
-router.route("/").get(userController.getAllUser);
+// router.use(authController.isLoggedIn);
 router.patch(
   "/updateMe",
   userController.uploadUserPhoto,
+  userController.resizeUserPhoto,
   userController.updateMe
 );
-router.route("/:id").delete(userController.deleteUser);
+router.get("/logout", authController.logout);
+
+router.route("/").get(userController.getAllUser);
+router.route("/:id").delete(userController.deleteMe);
 
 module.exports = router;

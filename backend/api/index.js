@@ -1,7 +1,11 @@
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
-
+const { initializeApp } = require("firebase/app");
+const { getStorage, ref } = require("firebase/storage");
+const { firebaseApp } = require("../utils/firebaseConfig");
+const firebase = firebaseApp();
 const mongoose = require("mongoose");
+// Import the functions you need from the SDKs you need
 const app = require("../app");
 
 // DB CONNECTION

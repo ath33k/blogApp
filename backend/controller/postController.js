@@ -1,7 +1,44 @@
+const multer = require("multer");
+const sharp = require("sharp");
+const { firebaseStorage } = require("./../utils/firebaseConfig");
+const { ref, uploadBytes } = require("firebase/storage");
 const catchAsyncErr = require("../utils/catchAsyncErr");
 const CustomError = require("./../utils/customError");
 const APIFeatures = require("./../utils/apiFeatures");
 const Post = require("../model/postsModel");
+
+const storage = firebaseStorage();
+
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    cb(new CustomError("please upload only image file", 400), false);
+  }
+};
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+exports.uploadCoverImage = upload.single("coverImage");
+
+exports.resizePhoto = catchAsyncErr(async (req, res, next) => {
+  if (!req.file) return next();
+
+  req.file.originalname = `user-${req.user.id}-${Date.now()}.jpeg`;
+
+  req.resized = await sharp(req.file.buffer)
+    .resize(1024, 768)
+    .toFormat("jpeg")
+    .jpeg({ quality: 90 })
+    .toBuffer();
+
+  next();
+});
 
 exports.getAllPosts = catchAsyncErr(async (req, res, next) => {
   try {
@@ -57,13 +94,19 @@ exports.getPost = catchAsyncErr(async (req, res, next) => {
 });
 
 exports.createPost = catchAsyncErr(async (req, res, next) => {
-  console.log(req.body);
   const newPost = await Post.create({
     heading: req.body.heading,
     content: req.body.content,
     description: req.body.description,
     category: req.body.category,
+    coverImage: req.file.originalname,
   });
+
+  console.log("errrrr");
+
+  const imageRef = ref(storage, `cover-images/${req.file.originalname}`);
+
+  await uploadBytes(imageRef, req.resized);
 
   res.status(201).json({
     status: "success",

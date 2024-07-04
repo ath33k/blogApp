@@ -21,10 +21,12 @@ export const Signup = () => {
           email: email,
           password: password,
           passwordConfirm: confirmPassword,
-        }
+        },
+        { withCredentials: true }
       );
       const responseData = response.data.data;
       // setLoggedUser(responseData.user);
+
       location.assign("/");
       // localStorage.setItem("user", JSON.stringify(responseData.user));
       console.log(responseData.user);

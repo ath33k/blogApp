@@ -16,7 +16,7 @@ exports.getAllCategories = catchAsyncErr(async (req, res, next) => {
 });
 
 exports.getCategory = catchAsyncErr(async (req, res, next) => {
-  const category = await Category.findById(req.params.id).populate("posts");
+  const category = await Category.findById(req.params.id);
   if (!category) {
     return next(new CustomError("Category hasn't found", 404));
   }
@@ -59,5 +59,19 @@ exports.updateCategory = catchAsyncErr(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     data: category,
+  });
+});
+
+exports.deleteCategory = catchAsyncErr(async (req, res, next) => {
+  console.log(req.params.id);
+  const deletedCategory = await Category.findByIdAndDelete(req.params.id);
+
+  if (!deletedCategory) {
+    return next(new CustomError("Category not found", 404));
+  }
+
+  res.status(204).json({
+    status: "success",
+    data: null,
   });
 });

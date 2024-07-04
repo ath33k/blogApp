@@ -41,17 +41,21 @@ const PostPage = () => {
 
   const fetchDelete = async () => {
     try {
-      await axios.delete(`/api/v1/posts/${id}`);
+      await axios.delete(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/posts/${id}`,
+        { withCredentials: true }
+      );
       handleModelClose();
       setIsSnackbarOpen(true);
+      setTimeout(() => {
+        setIsSnackbarOpen(false);
+        location.assign("/");
+      }, 1500);
     } catch (err) {
       handleModelClose();
-      console.err("couldnn't delete");
+      console.log(err);
+      console.log("couldnn't delete");
     }
-    setTimeout(() => {
-      setIsSnackbarOpen(false);
-      location.assign("/");
-    }, 3000);
   };
 
   useEffect(() => {

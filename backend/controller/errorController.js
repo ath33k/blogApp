@@ -25,6 +25,7 @@ const handleMongoServerErrorDB = (err) => {
 };
 
 const sendErrorProd = (err, res) => {
+  console.log(err.message);
   res.status(404).json({
     status: err.status,
     message: err.message,

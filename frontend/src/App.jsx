@@ -1,4 +1,4 @@
-// import "./App.css";
+import "./App.css";
 import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
@@ -23,52 +23,12 @@ function App() {
   // const [isLoading, setLoading] = useState(true);
   const [selectedId, setselectedId] = useState();
 
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/auth`,
-  //         {
-  //           withCredentials: true,
-  //         }
-  //       );
-
-  //       setLoggedUser(response.data.user);
-  //       setAuthenticated(true);
-  //       console.log(response.data);
-  //     } catch (err) {
-  //       setLoading(false);
-  //       setAuthenticated(false);
-  //       console.log(err);
-  //     }
-  //     setLoading(false);
-  //   };
-
-  //   fetchUser();
-  // }, []);
-
   return (
     <>
       {/* <UserProvider> */}
-      <NavBar
-        loggedUser={loggedUser}
-        isLoading={isLoading}
-        // setLoading={setLoading}
-        // isAuthenticated={isAuthenticated}
-      />
+      <NavBar />
       <Routes>
-        <Route
-          path="/"
-          element={
-            <HomePage
-              // loggedUser={loggedUser}
-              // setLoggedUser={setLoggedUser}
-              // isLoading={isLoading}
-              // setLoading={setLoading}
-              setselectedId={setselectedId}
-            />
-          }
-        />
+        <Route path="/" element={<HomePage setselectedId={setselectedId} />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />

@@ -9,13 +9,7 @@ import HomeTabs from "../components/HomeTabs";
 import { useLoggedUser } from "../context/UserProvider";
 import PostContainer from "../components/PostContainer";
 
-export default function HomePage({
-  // loggedUser,
-  // setLoggedUser,
-  // isLoading,
-  // setLoading,
-  setselectedId,
-}) {
+export default function HomePage({ setselectedId }) {
   const [tabSelection, setTabSelection] = useState("recents");
   return (
     <div className="home-grid-container">

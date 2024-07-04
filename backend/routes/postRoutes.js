@@ -3,18 +3,26 @@ const postController = require("./../controller/postController");
 const authController = require("./../controller/authController");
 
 const router = express.Router();
-// router.use(authController.isLoggedIn);
 // router.get("/auth", authController.checkLogin);
 
 router
   .route("/")
   .get(postController.getAllPosts)
-  .post(postController.createPost);
+  .post(
+    authController.protect,
+    postController.uploadCoverImage,
+    postController.resizePhoto,
+    postController.createPost
+  );
 
 router
   .route("/:id")
   .get(postController.getPost)
-  .patch(postController.updatePost)
-  .delete(authController.restrictTo("admin"), postController.deletePost);
+  .patch(authController.restrictTo("admin"), postController.updatePost)
+  .delete(
+    authController.protect,
+    // authController.restrictTo("admin"),
+    postController.deletePost
+  );
 
 module.exports = router;

@@ -16,6 +16,10 @@ router
 router
   .route("/:id")
   .get(likeController.getLike)
-  .delete(authController.protect, likeController.deleteLike);
+  .delete(
+    authController.protect,
+    authController.restrictTo("user"),
+    likeController.deleteLike
+  );
 
 module.exports = router;
