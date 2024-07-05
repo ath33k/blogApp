@@ -102,9 +102,6 @@ exports.protect = catchAsyncErr(async (req, res, next) => {
   // }
   const token = req.cookies.jwt;
 
-  console.log("req", req);
-  console.log("req.cookies:", req.cookies);
-
   console.log(req.file);
   if (!token) {
     console.log("no token");
@@ -328,16 +325,10 @@ exports.updatePassword = catchAsyncErr(async (req, res, next) => {
 });
 
 exports.logout = (req, res, next) => {
-  let domainName = process.env.FRONTEND_URL.split("//");
-  domainName = domainName[1].replace("/", "");
-
-  console.log(domainName);
-  console.log(req.cookies);
   res.cookie("jwt", "loggedout", {
     expires: new Date(Date.now() + 10 * 1000),
     secure: true,
     sameSite: "none",
-    domain: domainName,
   });
 
   res.status(200).json({
