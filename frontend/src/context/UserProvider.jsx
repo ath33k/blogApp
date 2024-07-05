@@ -23,9 +23,9 @@ function UserProvider({ children }) {
         console.log(response.data);
       } catch (err) {
         setLoggedUser(null);
+        setAuthenticated(false);
         console.log(err);
       }
-      setAuthenticated(false);
       setLoading(false);
     };
 
