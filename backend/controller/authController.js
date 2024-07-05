@@ -328,12 +328,16 @@ exports.updatePassword = catchAsyncErr(async (req, res, next) => {
 });
 
 exports.logout = (req, res, next) => {
+  let domainName = process.env.FRONTEND_URL.split("//");
+  domainName = domainName[1].replace("/", "");
+
+  console.log(domainName);
   console.log(req.cookies);
   res.cookie("jwt", "loggedout", {
     expires: new Date(Date.now() + 10 * 1000),
     secure: true,
     sameSite: "none",
-    domain: `${process.env.FRONTEND_URL}`,
+    domain: domainName,
   });
 
   res.status(200).json({
