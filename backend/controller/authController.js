@@ -333,6 +333,7 @@ exports.logout = (req, res, next) => {
     expires: new Date(Date.now() + 10 * 1000),
     secure: true,
     sameSite: "none",
+    domain: `${process.env.FRONTEND_URL}`,
   });
 
   res.status(200).json({
