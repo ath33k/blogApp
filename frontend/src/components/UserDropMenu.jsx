@@ -39,7 +39,7 @@ const UserDropMenu = ({ avatarUrl, loggedUser }) => {
           withCredentials: true,
         }
       );
-      location.assign("/");
+      location.reload(true);
     } catch (err) {
       console.log(err);
     }
