@@ -1,4 +1,4 @@
-import { Box, Grid, Pagination } from "@mui/material";
+import { Box, Button, Grid, Pagination } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import PostCard from "../components/PostCardLong";
@@ -6,8 +6,8 @@ import PostCardSmall from "../components/PostCardSmall";
 import PostCardLong from "../components/PostCardLong";
 import HeaderCarousel from "../components/HeaderCarousel";
 import HomeTabs from "../components/HomeTabs";
-import { useLoggedUser } from "../context/UserProvider";
 import PostContainer from "../components/PostContainer";
+import { ErrorBoundary } from "react-error-boundary";
 
 export default function HomePage({ setselectedId }) {
   const [tabSelection, setTabSelection] = useState("recents");
@@ -24,14 +24,16 @@ export default function HomePage({ setselectedId }) {
       </div>
       <div className="grid-3">
         <div className="grid-3-container gap-4 p-2 ">
-          <PostContainer
-            setselectedId={setselectedId}
-            tabSelection={tabSelection}
-          />
+          <ErrorBoundary fallbackRender={PostContainerErrFallBack}>
+            <PostContainer
+              setselectedId={setselectedId}
+              tabSelection={tabSelection}
+            />
+          </ErrorBoundary>
         </div>
       </div>
       <div className="grid-4 border-l-4 rounded-md pl-8 ">
-        <h3 className=" italic">Trending</h3>
+        <h3 className=" italic">Most Liked</h3>
         <div className="pt-6 flex flex-col gap-2">
           {/* {data.map((el) => (
             <PostCardSmall
@@ -48,35 +50,11 @@ export default function HomePage({ setselectedId }) {
   );
 }
 
-{
-  /* <>
-      <div>
-        <div className="grid-container gap-8 md:gap-10 sm:p-8 md:px-24">
-          <div className=" rounded-xl flex flex-col gap-4 p-2 bg-blue-900">
-            {data.map((el) => (
-              <PostCardLong
-                key={el._id}
-                postId={el._id}
-                heading={el.heading}
-                content={el.content}
-                setselectedId={setselectedId}
-              />
-            ))}
-            <Pagination
-              className="bg-white rounded-xl p-2"
-              count={pageCount}
-              page={page}
-              onChange={(e, pageNumber) => setPage(pageNumber)}
-              color="primary"
-            ></Pagination>
-          </div>
-          <div className="border-2 border-black">
-            <div>
-              <h3>Trending</h3>
-            </div>
-            <PostCardSmall />
-          </div>
-        </div>
-      </div>
-    </> */
+function PostContainerErrFallBack({ error, resetErrorBoundary }) {
+  return (
+    <div className="flex flex-col w-full justify-center items-center p-4 gap-2">
+      <div>{error.message}</div>
+      <Button variant="outlined">Try Again</Button>
+    </div>
+  );
 }

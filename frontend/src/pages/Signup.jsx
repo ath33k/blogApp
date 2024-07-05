@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 export const Signup = () => {
@@ -36,49 +37,62 @@ export const Signup = () => {
   };
 
   return (
-    <div className="flex justify-center m-4">
-      <form action="" onSubmit={handleFormSubmission}>
-        <h2>SIGN UP</h2>
-        <div className="flex flex-col gap-4 py-2">
-          <TextField
-            required
-            id="outlined-required"
-            label="Name"
-            defaultValue=""
-            onChange={(e) => setName(e.target.value)}
-          />
+    <div className="flex justify-center items-center w-full h-[90vh] ">
+      <div className="flex justify-center flex-col  items-center rounded-xl w-[80%] h-[85%] sm:w-[60%] lg:w-[40%] bg-orange-200 drop-shadow-lg border-2">
+        <form
+          action=""
+          onSubmit={handleFormSubmission}
+          className="flex flex-col items-center gap-2"
+        >
+          <h2>SIGN UP</h2>
+          <div className="flex flex-col gap-4 py-2">
+            <TextField
+              required
+              id="outlined-required"
+              label="Name"
+              defaultValue=""
+              onChange={(e) => setName(e.target.value)}
+            />
 
-          <TextField
-            required
-            id="outlined-required"
-            label="email"
-            defaultValue=""
-            onChange={(e) => setEmail(e.target.value)}
-          />
+            <TextField
+              required
+              id="outlined-required"
+              label="email"
+              defaultValue=""
+              onChange={(e) => setEmail(e.target.value)}
+            />
 
-          <TextField
-            required
-            id="outlined-required"
-            label="password"
-            type="password"
-            defaultValue=""
-            onChange={(e) => setPassword(e.target.value)}
-          />
+            <TextField
+              required
+              id="outlined-required"
+              label="password"
+              type="password"
+              defaultValue=""
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-          <TextField
-            required
-            id="outlined-required"
-            label="confirmPassword"
-            type="password"
-            defaultValue=""
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
+            <TextField
+              required
+              id="outlined-required"
+              label="confirmPassword"
+              type="password"
+              defaultValue=""
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
 
-          <Button variant="contained" color="success" type="submit">
-            Submit
-          </Button>
-        </div>
-      </form>
+            <Button
+              variant="contained"
+              sx={{ backgroundColor: "black", color: "white" }}
+              type="submit"
+            >
+              Submit
+            </Button>
+          </div>
+        </form>
+        <Link to={"/login"}>
+          <span className="text-xs">Already have an account?</span>
+        </Link>
+      </div>
     </div>
   );
 };

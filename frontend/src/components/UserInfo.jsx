@@ -221,7 +221,6 @@ const IMGPreviewModel = ({ DPImageUrl, setSelectedPreviewImage }) => {
 
   const handleModelClose = () => {
     setSelectedPreviewImage(false);
-    // setIsModelOpen(false);
   };
   return (
     <Modal

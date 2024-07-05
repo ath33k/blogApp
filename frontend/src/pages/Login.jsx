@@ -1,7 +1,7 @@
 import { Backdrop, Button, CircularProgress, TextField } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
-import { redirect } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 
 export const Login = () => {
   const [email, setEmail] = useState();
@@ -39,33 +39,46 @@ export const Login = () => {
   };
 
   return (
-    <div className="flex justify-center m-4">
+    <div className="flex justify-center items-center w-full h-[80vh] ">
       <BackDrop backDropOpen={backDropOpen} />
-      <form action="" onSubmit={handleFormSubmission}>
-        <h2>LOGIN</h2>
-        <div className="flex flex-col gap-4 py-2">
-          <TextField
-            required
-            id="outlined-required"
-            label="email"
-            defaultValue=""
-            onChange={(e) => setEmail(e.target.value)}
-          />
+      <div className="flex flex-col justify-center items-center rounded-xl w-[80%] h-[80%] sm:w-[60%] md:w-[50%] lg:w-[40%] bg-orange-200 drop-shadow-lg border-2">
+        <form
+          action=""
+          onSubmit={handleFormSubmission}
+          className="flex flex-col items-center gap-2"
+        >
+          <h2>Sign in</h2>
+          <div className="flex flex-col gap-4 py-2 ">
+            <TextField
+              required
+              id="outlined-required"
+              label="email"
+              defaultValue=""
+              onChange={(e) => setEmail(e.target.value)}
+            />
 
-          <TextField
-            required
-            id="outlined-required"
-            label="password"
-            type="password"
-            defaultValue=""
-            onChange={(e) => setPassword(e.target.value)}
-          />
+            <TextField
+              required
+              id="outlined-required"
+              label="password"
+              type="password"
+              defaultValue=""
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-          <Button variant="contained" color="success" type="submit">
-            Submit
-          </Button>
-        </div>
-      </form>
+            <Button
+              variant="contained"
+              sx={{ backgroundColor: "black", color: "white" }}
+              type="submit"
+            >
+              Submit
+            </Button>
+          </div>
+        </form>
+        <Link to={"/signup"}>
+          <span className="text-xs">Don't have an account?</span>
+        </Link>
+      </div>
     </div>
   );
 };

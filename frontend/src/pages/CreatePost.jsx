@@ -1,11 +1,15 @@
 import {
+  Box,
   Button,
   FormControl,
   InputLabel,
   MenuItem,
+  Modal,
   Select,
+  styled,
   TextField,
 } from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import NotLoggedInMsg from "../components/NotLoggedInMsg";
@@ -19,6 +23,31 @@ export default function CreatePost() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [otherCategory, setOtherCategory] = useState();
   const [content, setContent] = useState();
+  const [coverPhoto, setCoverPhoto] = useState();
+  const [coverImgUrl, setCoverImgUrl] = useState();
+  const [selectedPreviewImage, setSelectedPreviewImage] = useState(false);
+
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 0,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 100,
+  });
+
+  const handleFileChange = (e) => {
+    console.log(e.target.files);
+    setCoverPhoto(e.target.files[0]);
+  };
+
+  const handleImagePreview = () => {
+    setSelectedPreviewImage(true);
+    setCoverImgUrl(URL.createObjectURL(coverPhoto));
+  };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -69,6 +98,12 @@ export default function CreatePost() {
 
   return (
     <>
+      {selectedPreviewImage && (
+        <IMGPreviewModel
+          imageUrl={coverImgUrl}
+          setSelectedPreviewImage={setSelectedPreviewImage}
+        />
+      )}
       {!loggedUser ? (
         <NotLoggedInMsg />
       ) : (
@@ -126,6 +161,24 @@ export default function CreatePost() {
                       Create a Category
                     </Button>
                   </div>
+                  <Button
+                    component="label"
+                    role={undefined}
+                    variant="contained"
+                    type="file"
+                    tabIndex={-1}
+                    startIcon={<CloudUploadIcon />}
+                    onChange={(e) => handleFileChange(e)}
+                  >
+                    Cover Photo
+                    <VisuallyHiddenInput accept="image/*" type="file" />
+                  </Button>
+                  <div
+                    className="text-xs hover:cursor-pointer hover:text-blue-500"
+                    onClick={handleImagePreview}
+                  >
+                    {coverPhoto && <span>{coverPhoto.name}</span>}
+                  </div>
                 </div>
               </FormControl>
               <Button variant="contained" color="success" type="submit">
@@ -139,3 +192,38 @@ export default function CreatePost() {
     </>
   );
 }
+
+const IMGPreviewModel = ({ imageUrl, setSelectedPreviewImage }) => {
+  const [isModelOpen, setIsModelOpen] = useState(true);
+
+  const handleModelClose = () => {
+    setSelectedPreviewImage(false);
+  };
+  return (
+    <Modal
+      open={isModelOpen}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 400,
+          bgcolor: "background.paper",
+          boxShadow: 24,
+          p: 2,
+        }}
+      >
+        <div className="flex flex-col gap-4 items-center">
+          <Button variant="contained" onClick={handleModelClose}>
+            Close
+          </Button>
+          <img src={imageUrl} alt="profile picture" height="250px" />
+        </div>
+      </Box>
+    </Modal>
+  );
+};

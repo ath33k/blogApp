@@ -5,6 +5,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import CarouselItem from "./CarouselItem";
+import { Skeleton } from "@mui/material";
 
 const storage = getStorage();
 
@@ -12,18 +13,9 @@ const HeaderCarousel = ({ postId }) => {
   const [data, setData] = useState();
   const [isLoading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const fetchCoverImg = async () => {
-  //     const imageRef = ref(storage, `cover-images/${post.coverImage}`);
-
-  //     const url = await getDownloadURL(imageRef);
-  //     setCoverImg(url);
-  //   };
-  //   fetchCoverImg();
-  // }, [post]);
-
   useEffect(() => {
     const fetchPosts = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/api/v1/posts?random=5`,
@@ -31,64 +23,94 @@ const HeaderCarousel = ({ postId }) => {
         );
 
         setData(response.data.data);
-        // setPageCount(response.data.totalPages);
-        // setLoggedUser(response.data.user);
         console.log(response.data.data);
       } catch (err) {
-        setLoading(false);
         console.log(err);
       }
 
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     };
     fetchPosts();
   }, []);
 
   if (isLoading) {
-    return <div>Loading..</div>;
-  }
-  return (
-    <div className="relative">
-      <div className="flex justify-start absolute z-10 top-0 left-0 right-0 p-8 px-10 bg-gradient-to-b from-black">
-        <div className="font-thin italic text-lg text-white">For You</div>
+    return (
+      <div className="w-full h-[360px] md:h-[440px] lg:h-[460px] xl:h-[480px] ">
+        <CarouselSkeleton />
       </div>
-      <Carousel arrows autoplay pauseOnHover={false}>
-        {data.map((el) => (
-          <CarouselItem key={el._id} post={el} />
-          // <div key={el._id}>
-          //   <div className="relative">
-          //     <div className="absolute flex flex-col justify-between text-white left-0 top-0 right-0 bottom-0 bg-black bg-opacity-20 gap-2 p-10">
-          //       <h3>FOR YOU</h3>
-          //       <div className="flex flex-col sm:items-start p-1">
-          //         <div className="text-xs text-blue-600 ">Category</div>
-          //         <h2 className="text-2xl lg:text-3xl font-semibold  uppercase">
-          //           {el.heading}
-          //         </h2>
+    );
+  }
 
-          //         <div className="pb-2">
-          //           <p className="text-sm md:text-base lg:text-lg font-light">
-          //             {el.content}
-          //           </p>
-          //         </div>
-          //         <Link to={`/post/${el._id}`}>
-          //           <button className="bg-blue-500 text-white p-1 pb-2 px-4 md:px-6 rounded-xl text-xs lg:text-sm">
-          //             Read More
-          //           </button>
-          //         </Link>
-          //       </div>
-          //     </div>
-          //     <img
-          //       src={logo}
-          //       className="w-full h-[320px] sm:h-[360px] md:h-[420px] lg:h-[460px] xl:h-[480px] "
-          //       alt=""
-          //     />
-          //   </div>
-          // </div>
-        ))}
-      </Carousel>
-      <br />
-    </div>
+  return (
+    <>
+      <div className="relative">
+        {data ? (
+          <>
+            <div className="flex justify-start absolute z-10 top-0 left-0 right-0 p-6  md:px-10 bg-gradient-to-b from-black">
+              <div className="font-thin  text-sm lg:text-lg text-white">
+                Random
+              </div>
+            </div>
+
+            <Carousel arrows autoplay pauseOnHover={false}>
+              {data?.map((el) => (
+                <CarouselItem key={el._id} post={el} />
+              ))}
+            </Carousel>
+            <br />
+          </>
+        ) : (
+          <div className="w-full h-[360px] md:h-[420px] lg:h-[460px] gray bg-black bg-opacity-50">
+            {/* <CarouselSkeleton /> */}
+            <div className="absolute flex justify-center items-center z-10 top-0 left-0 right-0 bottom-0 text-xl text-white">
+              No posts found
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
 export default HeaderCarousel;
+
+function NoCarouselItem() {
+  return (
+    <div className="flex justify-center items-center bg-black w-full h-[360px] md:h-[420px] lg:h-[460px] xl:h-[480px] ">
+      <div className="text-white text-xl">No Post</div>
+    </div>
+  );
+}
+
+function CarouselSkeleton() {
+  return (
+    <>
+      <Skeleton
+        variant="rectangular"
+        width={"100%"}
+        height={"70%"}
+        animation="wave"
+      />
+      <Skeleton
+        variant="text"
+        width={"95%"}
+        sx={{ fontSize: "2rem" }}
+        animation="wave"
+      />
+      <Skeleton
+        variant="text"
+        width={"85%"}
+        sx={{ fontSize: "1rem" }}
+        animation="wave"
+      />
+      <Skeleton
+        variant="text"
+        width={"50%"}
+        sx={{ fontSize: "1rem" }}
+        animation="wave"
+      />
+    </>
+  );
+}
