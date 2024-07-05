@@ -15,6 +15,7 @@ import Logout from "@mui/icons-material/Logout";
 import React, { useState } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
+import { useLoggedUser } from "../context/UserProvider";
 
 const UserDropMenu = ({ avatarUrl, loggedUser }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -38,9 +39,7 @@ const UserDropMenu = ({ avatarUrl, loggedUser }) => {
           withCredentials: true,
         }
       );
-      setTimeout(() => {
-        window.location.assign("/");
-      }, 1000);
+      location.assign("/");
     } catch (err) {
       console.log(err);
     }

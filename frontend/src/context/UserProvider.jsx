@@ -22,10 +22,10 @@ function UserProvider({ children }) {
         setAuthenticated(true);
         console.log(response.data);
       } catch (err) {
-        setLoading(false);
-        setAuthenticated(false);
+        setLoggedUser(null);
         console.log(err);
       }
+      setAuthenticated(false);
       setLoading(false);
     };
 
