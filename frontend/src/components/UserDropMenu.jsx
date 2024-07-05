@@ -38,7 +38,9 @@ const UserDropMenu = ({ avatarUrl, loggedUser }) => {
           withCredentials: true,
         }
       );
-      window.location.assign("/");
+      setTimeout(() => {
+        window.location.assign("/");
+      }, 1000);
     } catch (err) {
       console.log(err);
     }

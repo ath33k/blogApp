@@ -325,10 +325,10 @@ exports.updatePassword = catchAsyncErr(async (req, res, next) => {
 });
 
 exports.logout = (req, res, next) => {
-  console.log("his");
   res.cookie("jwt", "loggedout", {
     expires: new Date(Date.now() + 10 * 1000),
-    httpOnly: true,
+    secure: true,
+    sameSite: "none",
   });
 
   res.status(200).json({
