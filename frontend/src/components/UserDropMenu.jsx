@@ -33,11 +33,10 @@ const UserDropMenu = ({ avatarUrl, loggedUser }) => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/logout`,
-        {
-          withCredentials: true,
-        }
+        null,
+        { withCredentials: true }
       );
       location.reload(true);
     } catch (err) {
